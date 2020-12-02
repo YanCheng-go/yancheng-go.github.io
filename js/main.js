@@ -111,16 +111,16 @@
   //  Porfolio isotope and filter
   // ========================================================================= //
   $(window).on('load', function() {
-    var portfolioIsotope = $('.portfolio-container').isotope({
-      itemSelector: '.portfolio-item',
+    var journalIsotope = $('.journal-container').isotope({
+      itemSelector: '.journal-item',
       layoutMode: 'fitRows'
     });
 
-    $('#portfolio-flters li').on('click', function() {
-      $("#portfolio-flters li").removeClass('filter-active');
+    $('#journal-filters li').on('click', function() {
+      $("#journal-filters li").removeClass('filter-active');
       $(this).addClass('filter-active');
 
-      portfolioIsotope.isotope({
+      journalIsotope.isotope({
         filter: $(this).data('filter')
       });
     });
