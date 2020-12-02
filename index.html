@@ -9,6 +9,7 @@
   <title>Yan Cheng</title>
   <!-- Favicon-->
   <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
+  <!-- <link rel="shortcut icon" href="assets/img/favicon.png" /> -->
   <!-- Font Awesome icons (free version)-->
   <script src="https://use.fontawesome.com/releases/v5.15.1/js/all.js" crossorigin="anonymous"></script>
   <!-- Google fonts-->
@@ -18,30 +19,11 @@
   <!-- Third party plugin CSS-->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
 
-  <link href="css/styles.css" rel="stylesheet" />
-  <link href="css/style3.css" rel="stylesheet" />
+  <link href="assets/css/styles.css" rel="stylesheet" />
+  <link href="assets/css/style3.css" rel="stylesheet" />
+  <link href="assets/css/style2.css" rel="stylesheet" />
 
   <style>
-    .black-overlay {
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      height: 100%;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.6);
-    }
-
-    .carousel .carousel-item {
-      height: 500px;
-    }
-
-    .carousel-item img {
-      position: absolute;
-      object-fit: cover;
-      top: 0;
-      left: 0;
-      min-height: 500px;
-    }
   </style>
 
 </head>
@@ -51,7 +33,13 @@
   <!--========= Navigation ==========-->
   <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
     <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="#page-top">YAN CHENG</a>
+      <!-- <a class="navbar-brand js-scroll-trigger" href="#page-top"><img class="btn btn-xs" src="assets/img/favicon.png" alt="favicon"></a> -->
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">
+        <img class="btn btn-xs pl-0 pr-3" src="assets/img/favicon.png" alt="favicon">
+        <!-- YAN CHENG -->
+        <span class="typed"></span>
+        <p class="d-none typed-items" data-typed-person="YAN CHENG">Cat-person, Fast-learner, Critical-thinker, Developer, Designer, Photographer</p>
+      </a>
       <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
           class="navbar-toggler-icon"></span></button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -121,11 +109,19 @@
         <span class="visually-hidden">Next</span>
       </a>
     </div>
+
+    <div class="container-fluid bg-primary">
+      <div class="col-lg-12 text-center">
+        <a class="" href="#about"><i class="fas fa-angle-down fa-8x"></i></a>
+      </div>
+    </div>
+
   </header>
 
 
   <!--============ About ============-->
-  <section class="page-section bg-primary pb-5" id="about">
+  <section class="page-section bg-primary pb-5 pt-4 mt-0" id="about">
+
     <div class="container-fluid">
       <div class="row justify-content-center">
 
@@ -135,19 +131,20 @@
         </div>
         <div class="col-lg-12 text-center mb-4 px-0">
           <!-- <h4 class="text-white mb-4">Eduction and Professional Experience</h4> -->
-          <p class="text-white-50">Scroll down to view the story map of my backgound</p>
-          <div class="embed-responsive embed-responsive-4by3">
+          <p class="text-white-50">Scroll down to view the story map of my backgound (slow loading)</p>
+          <div class="embed-responsive embed-responsive-21by9 hold-this-iframe">
             <iframe class="embed-responsive-item" id="story-map" src="https://storymaps.arcgis.com/stories/87c74f55d5d6412a922c2a66b7a8a5ee"></iframe>
+            <div id="loadingMessage">...loading...</div>
           </div>
         </div>
 
         <div class="col-lg-8 text-center mb-4 mt-4">
 
-          <h4 class="text-white mb-4">Research interests</h4>
-          <p class="text-white-50 mb-4">Geo-Statistics, Data Science, Phenology, Data Fusion, Cartography</p>
+          <h4 class="h4 text-white mb-4">Research interests</h4>
+          <p class="text-white-50 pb-6">Phenology, Data Fusion, Cartography, Geo-Statistics, Data Science, Web Development</p>
 
-          <h4 class="text-white mb-4">Technical skills</h4>
-          <div class="row">
+          <h4 class="h4 text-white mb-4">Technical skills</h4>
+          <div class="row pb-6">
             <div class="col-md-4">
               <i class="fas fa-code fa-2x text-white"></i>
               <p class="text-white-50">Python, JavaScript, MATLAB, IDL, Machine Learning</p>
@@ -162,7 +159,7 @@
             </div>
           </div>
 
-          <h4 class="text-white mb-4">Hobbies</h4>
+          <h4 class="h4 text-white mb-4">Hobbies</h4>
           <div class="row">
             <div class="col-md-4">
               <i class="fa fa-running fa-2x text-white"></i>
@@ -302,7 +299,7 @@
             <div class="card-body">
               <h5 class="card-title">Jupyter Notebook for Presentation</h5>
               <p class="card-text">Coming soon...</p>
-              <a href="#" class="btn btn-primary">Read</a>
+              <a href="blogs/blog-20201202.html" class="btn btn-primary">Read</a>
             </div>
           </div>
         </div>
@@ -318,7 +315,7 @@
           </div>
         </div>
 
-        <div class="col-lg-4 col-md-6 mb-4 journal-item filter-cat3">
+        <!-- <div class="col-lg-4 col-md-6 mb-4 journal-item filter-cat3">
           <div class="card" style="width: 18rem;">
             <img class="card-img-top" src="assets/img/placeholder-image.jpeg" alt="Card image cap">
             <div class="card-body">
@@ -371,7 +368,7 @@
               <a href="#" class="btn btn-primary">Read</a>
             </div>
           </div>
-        </div>
+        </div> -->
 
       </div>
     </div>
@@ -397,19 +394,24 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-4 mr-auto text-center mb-5 mb-lg-0">
+        <div class="col-lg-3 mr-auto text-center mb-5 mb-lg-0">
           <a href="mailto:chengyan2017@gmail.com" target="_blank"><i class="fas fa-envelope fa-3x mb-3 text-dark"></i></a>
           <a class="d-block" href="mailto:chengyan2017@gmail.com" target="_blank">chengyan2017@gmail.com</a>
         </div>
 
-        <div class="col-lg-4 mr-auto text-center mb-5 mb-lg-0">
+        <div class="col-lg-3 mr-auto text-center mb-5 mb-lg-0">
           <a href="https://twitter.com/yanchengrs" target="_blank"><i class="fab fa-twitter fa-3x mb-3 text-dark"></i></a>
           <a class="d-block" href="https://twitter.com/yanchengrs" target="_blank">YanChengRS</a>
         </div>
 
-        <div class="col-lg-4 mr-auto text-center mb-5 mb-lg-0">
-          <a herf="https://www.linkedin.com/in/yan-cheng-832647195" target="_blank"><i class="fab fa-linkedin fa-3x mb-3 text-dark"></i></a>
-          <a class="d-block" href="https://www.linkedin.com/in/yan-cheng-832647195" target="_blank">Yan Cheng</a>
+        <div class="col-lg-3 mr-auto text-center mb-5 mb-lg-0">
+          <a href="https://www.instagram.com/maverickmiaow/"><i class="fab fa-instagram fa-3x mb-3 text-dark"></i></a></li>
+          <a class="d-block" href="https://www.instagram.com/maverickmiaow/" target="_blank">maverickmiaow</a>
+        </div>
+
+        <div class="col-lg-3 mr-auto text-center mb-5 mb-lg-0">
+          <a href="https://www.linkedin.com/in/yan-cheng-832647195/" target="_blank"><i class="fab fa-linkedin fa-3x mb-3 text-dark"></i></a>
+          <a class="d-block" href="https://www.linkedin.com/in/yan-cheng-832647195/" target="_blank">Yan Cheng</a>
         </div>
 
       </div>
@@ -421,7 +423,7 @@
   <!-- Footer-->
   <footer class="bg-light py-5">
     <div class="container">
-      <div class="small text-center text-muted">Copyright © 2020 - CHENG Yan</div>
+      <div class="small text-center text-muted">Copyright © 2020 - YAN CHENG</div>
     </div>
   </footer>
 
@@ -433,16 +435,25 @@
   <!-- Third party plugin JS-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
-  <script src="js/vendor/typed/typed.js"></script>
-  <script src="js/vendor/venobox/venobox.min.js"></script>
-  <script src="js/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="js/vendor/owl.carousel/owl.carousel.min.js"></script> -->
+  <script src="assets/vendor/typed/typed.js"></script>
+  <script src="assets/vendor/venobox/venobox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script> -->
 
   <!-- Core theme JS-->
-  <script src="js/scripts.js"></script>
-  <script src="js/main.js"></script>
+  <script src="assets/js/scripts.js"></script>
+  <script src="assets/js/main.js"></script>
 
   <script>
+
+    $('.hold-this-iframe').ready(function () {
+      $('#loadingMessage').css('display', 'none');
+    });
+
+    $('.hold-this-iframe').load(function () {
+      $('#loadingMessage').css('display', 'none');
+    });
+
   </script>
 </body>
 

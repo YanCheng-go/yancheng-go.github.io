@@ -50,7 +50,8 @@ a:hover {
 }
 
 a:hover, a:focus {
-  color: #b8a07e;
+  /* color: #b8a07e; */
+  color: rgba(246, 122, 88, 0.5)
   text-decoration: underline;
 }
 
@@ -218,7 +219,8 @@ nav ul li a {
 }
 
 .active {
-  color: #afafaf;
+  /* color: #afafaf; */
+  color: rgba(246, 122, 88, 0.5)
 }
 
 /*--------------------------------------------------------------
@@ -1323,7 +1325,8 @@ blockquote {
 }
 
 #journal #journal-filters li:hover, #journal #journal-filters li.filter-active {
-  color: #b8a07e;
+  /* color: #b8a07e; */
+  color: rgba(246, 122, 88, 0.5)
 }
 
 #journal #journal-filters li:last-child {
