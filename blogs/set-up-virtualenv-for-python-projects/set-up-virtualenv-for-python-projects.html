@@ -1,0 +1,668 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Set up multiple environments for Python project - better late than never</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="0bef9198-ae0c-4319-b148-56a49ed9814b" class="page sans"><header><img class="page-cover-image" src="https://www.notion.so/images/page-cover/solid_blue.png" style="object-position:center 40%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon">🖇️</span></div><h1 class="page-title">Set up multiple environments for Python project - better late than never</h1><table class="properties"><tbody><tr class="property-row property-row-select"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesSelect"><path d="M7,13 C10.31348,13 13,10.31371 13,7 C13,3.68629 10.31348,1 7,1 C3.68652,1 1,3.68629 1,7 C1,10.31371 3.68652,13 7,13 Z M3.75098,5.32278 C3.64893,5.19142 3.74268,5 3.90869,5 L10.09131,5 C10.25732,5 10.35107,5.19142 10.24902,5.32278 L7.15771,9.29703 C7.07764,9.39998 6.92236,9.39998 6.84229,9.29703 L3.75098,5.32278 Z"></path></svg></span>Access</th><td><span class="selected-value select-value-color-blue">Public</span></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>Categories</th><td><span class="selected-value select-value-color-orange">Blogs</span></td></tr><tr class="property-row property-row-created_time"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesCreatedAt"><path d="M6.98643729,14.0000972 C5.19579566,14.0000972 3.40419152,13.3106896 2.04245843,11.9323606 C-0.681017475,9.21200555 -0.680780251,4.76029539 2.04293482,2.04012507 C4.76664406,-0.68004331 9.22427509,-0.68004331 11.9480135,2.04013479 C13.272481,3.36277455 14,5.1330091 14,6.99552762 C14,8.87640182 13.2721894,10.6285043 11.9480135,11.9509302 C10.5679344,13.3105924 8.77756503,14.0000972 6.98643729,14.0000972 Z M10.2705296,7.00913883 L10.2705296,8.46099754 L10.2705296,8.65543362 L10.076181,8.65543362 L8.6543739,8.65543362 L5.72059514,8.65543362 L5.52619796,8.65543362 L5.52619796,8.46099754 L5.52619796,5.52541044 L5.52619796,3.37946773 L5.52619796,3.18502193 L5.72059514,3.18502193 L7.17253164,3.18502193 L7.36692883,3.18502193 L7.36692883,3.37946773 L7.36692883,6.81467358 L10.076181,6.81467358 L10.2705296,6.81467358 L10.2705296,7.00913883 Z M12.1601539,6.99552762 C12.1601539,5.61697497 11.6190112,4.32597154 10.6393933,3.34769528 C8.63253764,1.34336744 5.35197452,1.34061603 3.34153136,3.33944106 C3.33868273,3.34219247 3.33607716,3.34494388 3.33322852,3.34769528 C1.32397148,5.35459953 1.32372842,8.63641682 3.33322852,10.6433794 C5.34295224,12.6504489 8.62968901,12.6504489 10.6393933,10.6433794 C11.6190112,9.66506426 12.1601539,8.37408027 12.1601539,6.99552762 Z"></path></svg></span>Created</th><td><time>@August 30, 2021 11:39 AM</time></td></tr><tr class="property-row property-row-date"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesDate"><path d="M10.8889,5.5 L3.11111,5.5 L3.11111,7.05556 L10.8889,7.05556 L10.8889,5.5 Z M12.4444,1.05556 L11.6667,1.05556 L11.6667,0 L10.1111,0 L10.1111,1.05556 L3.88889,1.05556 L3.88889,0 L2.33333,0 L2.33333,1.05556 L1.55556,1.05556 C0.692222,1.05556 0.00777777,1.75556 0.00777777,2.61111 L0,12.5 C0,13.3556 0.692222,14 1.55556,14 L12.4444,14 C13.3,14 14,13.3556 14,12.5 L14,2.61111 C14,1.75556 13.3,1.05556 12.4444,1.05556 Z M12.4444,12.5 L1.55556,12.5 L1.55556,3.94444 L12.4444,3.94444 L12.4444,12.5 Z M8.55556,8.61111 L3.11111,8.61111 L3.11111,10.1667 L8.55556,10.1667 L8.55556,8.61111 Z"></path></svg></span>Date</th><td></td></tr><tr class="property-row property-row-date"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesDate"><path d="M10.8889,5.5 L3.11111,5.5 L3.11111,7.05556 L10.8889,7.05556 L10.8889,5.5 Z M12.4444,1.05556 L11.6667,1.05556 L11.6667,0 L10.1111,0 L10.1111,1.05556 L3.88889,1.05556 L3.88889,0 L2.33333,0 L2.33333,1.05556 L1.55556,1.05556 C0.692222,1.05556 0.00777777,1.75556 0.00777777,2.61111 L0,12.5 C0,13.3556 0.692222,14 1.55556,14 L12.4444,14 C13.3,14 14,13.3556 14,12.5 L14,2.61111 C14,1.75556 13.3,1.05556 12.4444,1.05556 Z M12.4444,12.5 L1.55556,12.5 L1.55556,3.94444 L12.4444,3.94444 L12.4444,12.5 Z M8.55556,8.61111 L3.11111,8.61111 L3.11111,10.1667 L8.55556,10.1667 L8.55556,8.61111 Z"></path></svg></span>Last update</th><td><time>@September 6, 2021</time></td></tr><tr class="property-row property-row-text"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>Reading Time</th><td>10 mins</td></tr><tr class="property-row property-row-select"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesSelect"><path d="M7,13 C10.31348,13 13,10.31371 13,7 C13,3.68629 10.31348,1 7,1 C3.68652,1 1,3.68629 1,7 C1,10.31371 3.68652,13 7,13 Z M3.75098,5.32278 C3.64893,5.19142 3.74268,5 3.90869,5 L10.09131,5 C10.25732,5 10.35107,5.19142 10.24902,5.32278 L7.15771,9.29703 C7.07764,9.39998 6.92236,9.39998 6.84229,9.29703 L3.75098,5.32278 Z"></path></svg></span>Status</th><td><span class="selected-value select-value-color-default">Complete</span></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>Tags</th><td><span class="selected-value select-value-color-orange">Python</span><span class="selected-value select-value-color-yellow">Tutorial</span></td></tr></tbody></table></header><div class="page-body"><ul id="83a8161b-9f39-4d67-84d8-5168e9d936a2" class="toggle"><li><details open=""><summary><strong><mark class="highlight-orange">Table of Content</mark></strong></summary><nav id="b6c780b0-b0b1-48f4-809d-af6fd80e0940" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#42a4c47a-96ef-4bee-a46d-386723548a42"><mark class="highlight-orange">Why multiple environments</mark></a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#1e8e5c9b-3029-4190-84d8-e9f399f1f9af"><mark class="highlight-orange">Dry but essential concepts</mark><mark class="highlight-blue"> </mark></a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#8400182c-fb63-4e2f-9209-55ed4a67f68a"><mark class="highlight-orange">Set up multiple virtual environments</mark></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#70122852-c1a2-4083-86ff-ff3ceceea81f"><mark class="highlight-orange">Using conda and command prompt</mark></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#4c8bf5ef-3bc6-4cb5-9c66-0fb31e6d93ec">1. Download and install <mark class="highlight-blue"><a href="https://docs.conda.io/en/latest/miniconda.html">mini conda</a></mark> or <mark class="highlight-blue"><a href="https://docs.anaconda.com/anaconda/install/index.html">anaconda</a></mark></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#2033a0ac-7abc-4880-b730-c75774456a52">2. Create an environment with commands</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#99ec1901-edb4-43b5-950f-243aafee248d">2. (Alternative) Create a virtual environment from a yaml file</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#6dc93129-0adc-445a-a4c0-e103e542ce40">3. Activate an environment</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#922d1240-447d-4f95-be00-69d5d4b3ff6e">4. Install dependencies in a specific environment <a href="https://docs.anaconda.com/anaconda/user-guide/tasks/install-packages/">🔗</a></a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#0e4249b8-16a4-40b7-b4d3-7cd216623ce4">5. Export environment configurations as a YAML file</a></div><div class="table_of_contents-item table_of_contents-indent-2"><a class="table_of_contents-link" href="#1911038a-0caf-4fea-b2b0-1ad51946ff9d">6. Cheatsheet of environment management in conda <a href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#determining-your-current-environment">🔗</a></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#5d73e846-4302-4b62-b41d-0790772cdfa8"><mark class="highlight-orange">Set up environment in PyCharm</mark></a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#c57fbdba-3992-4fc3-a3a3-1febacd922b5"><mark class="highlight-orange">Best practice</mark></a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#fec83a4a-1346-4d98-9cf2-52793089edbf">One project one environment</a></div><div class="table_of_contents-item table_of_contents-indent-1"><a class="table_of_contents-link" href="#b1369890-6581-4be9-ae27-33d2ddb2a5a4">Conda or pip? It is not a single choice question.</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#84c9fcc9-5b64-4a95-896d-c5c39f3e2a84"><mark class="highlight-orange">Reference</mark></a></div></nav></details></li></ul><h1 id="42a4c47a-96ef-4bee-a46d-386723548a42" class=""><mark class="highlight-orange">Why multiple environments</mark></h1><p id="454bd88f-302a-415d-b5a0-457bf2190621" class="">You may enter the world of coding as being amazed by the easy-to-read syntax of Python and rich libraries/resources in the community. At some point, you start to get frustrated with the endless errors while installing python libraries or running old scripts. Trust me - it is absolutely normal - almost every beginner to Python has gone through this struggle. Python, as a high-level programming language, is extremely friendly for beginners with no coding background to get hands-on experience despite skipping learning basic but dry concepts or practices. However, these basics are essential to enter the next level of Python programming and develop complex, robust, replicable, and professional. In this article, I will recap dry but vital concepts of Python programming and walk you through the setup of multiple environments using conda.</p><h1 id="1e8e5c9b-3029-4190-84d8-e9f399f1f9af" class=""><mark class="highlight-orange">Dry but essential concepts</mark><mark class="highlight-blue"> </mark></h1><ul id="0e45ea04-f5fd-4911-9715-5dd5ecd49d77" class="toggle"><li><details open=""><summary><strong>Virtual environment</strong></summary><blockquote id="e16f7c72-aaf6-4db8-8295-0194cd381a70" class="">A virtual environment is a Python environment such that the Python interpreter, libraries and scripts installed into it are isolated from those installed in other virtual environments, and (by default) any libraries installed in a “system” Python, i.e., one which is installed as part of your operating system. <a href="https://docs.python.org/3/library/venv.html#venv-def">🔗</a></blockquote></details></li></ul><ul id="444b5208-7fef-4a81-93b7-ee8bea8f3ad1" class="toggle"><li><details open=""><summary><strong>Conda and pip</strong></summary><p id="af66ccaf-8ff0-4947-b2d7-4828af3c0fcf" class="">Conda and pip are both commonly-used package managers. Check <mark class="highlight-blue"><a href="https://www.anaconda.com/blog/understanding-conda-and-pip">this website</a></mark> for the comparison between conda and pip. Overall, aside from managing packages, conda can be used to manage virtual environment. Pip and conda can be used interchangeably in a Conda environment. For more information, please go through the rest of this article. </p></details></li></ul><ul id="ffc41ec2-c9bc-4adb-a233-27f03ca92d80" class="toggle"><li><details open=""><summary><strong>Anaconda VS miniconda VS conda</strong></summary><p id="1118500d-4af8-454b-9a50-64312f748000" class="">The following diagrams should explain the difference between anaconda, minconda, and conda clearly.</p><figure id="693e8dbc-cf36-4f1d-aa79-3e07c76999d6" class="image"><a href="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled.jpeg"><img style="width:1280px" src="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled.jpeg"/></a></figure><p id="abf46e19-630d-4607-862b-c9f2484c5ff9" class="">
+</p><figure id="fbfc876a-8e55-4cbe-89a4-dd9163d47f57" class="image"><a href="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled.png"><img style="width:1280px" src="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled.png"/></a></figure></details></li></ul><ul id="dafb0f74-61c9-4998-9dfd-1cb6291d8110" class="toggle"><li><details open=""><summary><strong>PyPI</strong></summary><blockquote id="287b708d-3e03-40e5-868e-2f32fef1e9db" class="">Python Package Index (PyPI) is a repository of software for python programming language. PyPI helps you find and install software developed and shared by the Python community. Pip looks for packages in PyPI. </blockquote></details></li></ul><h1 id="8400182c-fb63-4e2f-9209-55ed4a67f68a" class=""><mark class="highlight-orange">Set up multiple virtual environments</mark></h1><p id="1bb8732d-04c1-4f92-8017-6077fc0c8b86" class="">This instruction is designed for people with different programming preferences and knowlegde. You can use either one of GUIs or tools among command prompt, Anaconda, or Pycharm to set up and manage virtual environments for python projects.</p><figure id="64dbcc8d-e700-47fd-9d07-916d1e0126e0" class="image"><a href="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%201.png"><img style="width:822px" src="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%201.png"/></a></figure><h2 id="70122852-c1a2-4083-86ff-ff3ceceea81f" class=""><mark class="highlight-orange">Using conda and command prompt</mark></h2><h3 id="4c8bf5ef-3bc6-4cb5-9c66-0fb31e6d93ec" class="">1. Download and install <mark class="highlight-blue"><a href="https://docs.conda.io/en/latest/miniconda.html">mini conda</a></mark> or <mark class="highlight-blue"><a href="https://docs.anaconda.com/anaconda/install/index.html">anaconda</a></mark></h3><p id="63f369c0-d7c6-4193-ad44-9b4c5c50bed3" class="">Check out<mark class="highlight-blue"> </mark><mark class="highlight-blue"><a href="https://stackoverflow.com/questions/45421163/anaconda-vs-miniconda">tupui’s answer</a></mark><mark class="highlight-blue"> </mark>to the difference between mini Conda and anaconda.</p><h3 id="2033a0ac-7abc-4880-b730-c75774456a52" class="">2. Create an environment with commands</h3><p id="4b7933d5-e1c0-4820-85db-04291c2a9bf9" class="">To create an environment in the default folder using conda, run:</p><pre id="87e7c6f8-4b59-48ec-bc42-cb29c00e4d6c" class="code"><code>conda create --name &lt;ENVIRONMENT-NAME&gt; python==3.9</code></pre><p id="2c9528de-cc7c-4414-9213-99eb4a268378" class="">To create an environment in a user-defined folder, run:</p><pre id="f2b7b5a3-b02e-4499-91ef-8009906890ee" class="code"><code>conda create --prefix &lt;SELF-DEFINED-ENVIRONMENT-PATH&gt; python==3.9</code></pre><p id="4f8f084f-1321-4324-88be-30c059fb69ad" class=""><em>Notes: </em></p><p id="e7eb5466-c86e-45c1-93b8-0c9bd992f4b1" class=""><em>As you may notice, —name → environments live in the default folder; —prefix → environments live in user-defined folders. This applies to most command lines for environment management using conda.</em></p><p id="c4344dd6-cfb7-4310-8266-414e1a71b9aa" class=""><em>It is recommended to create an environment for a specific python project in a subdirectory of the project directory, which makes the project more self-contained and the IDE (such as PyCharm) easily tell which environment to use. However, if not using the default directory, you’ll need to pass the —</em><strong><em>prefix </em></strong><em>flag along with the environment’s full path to locate and manipulate the environment.  </em></p><h3 id="99ec1901-edb4-43b5-950f-243aafee248d" class="">2. (Alternative) Create a virtual environment from a yaml file</h3><ol type="1" id="431e4d7e-dc9f-4e6c-8d0c-26de856f6139" class="numbered-list" start="1"><li>Create a <mark class="highlight-blue"><a href="https://zetcode.com/python/yaml/">YAML file</a></mark> with information of name of environment, version of python, etc..</li></ol><pre id="6a7a9df5-5759-4b18-acd1-f3b0f728a67a" class="code"><code>name: NAME—OF-ENVIRONMENT
+
+channels:
+	- default
+	- conda-forge
+
+dependencies:
+	- python=3.9
+	- pip=20.3.3
+	- (OPTIONAL) OTHER PACKAGES/LIBRARIES
+	- pip:
+		- (OPTIONAL) OTHER PACKAGES/LIBRARIES only exists on pip</code></pre><ol type="1" id="91718ce3-a527-418d-9445-2d7300835c4b" class="numbered-list" start="2"><li>Create a virtual environment from the yaml file by running the following line in terminal or command prompt:</li></ol><pre id="aa0d8a42-a1ba-48ac-9aa9-23d1e0cbfacb" class="code"><code>conda env create -f &lt;YAML-FILE-NAME&gt;.yml</code></pre><h3 id="6dc93129-0adc-445a-a4c0-e103e542ce40" class="">3. Activate an environment</h3><pre id="8c4f2cc7-31cb-4dbd-a4a9-f8d909411c9b" class="code"><code># For an environment saved in the default folder
+conda activate &lt;NAME-OF-ENVIRONMENT&gt;
+
+# For an environment saved in a user-defined folder
+conda activate &lt;USER-DEFINED-ENVIRONMENT-PATH&gt;</code></pre><h3 id="922d1240-447d-4f95-be00-69d5d4b3ff6e" class="">4. Install dependencies in a specific environment <a href="https://docs.anaconda.com/anaconda/user-guide/tasks/install-packages/">🔗</a></h3><pre id="06a0511b-24b4-49a1-a1d9-3d9cdced05e5" class="code"><code>conda install &lt;PACKAGE-NAME&gt;=&lt;VERSION&gt;</code></pre><p id="23818d92-b6ab-4627-b01d-c5bad53bad95" class="">You can also use pip in the environment managed by conda.</p><pre id="3086b655-0e45-4fe9-9211-282573e0760a" class="code"><code>pip install &lt;PACKAGE-NAME&gt;=&lt;VERSION&gt; --upgrade-strategy only-if-needed</code></pre><p id="1223b0dd-70bb-44f1-b1c0-5a92591e096a" class=""><em>Note: Use pip only if conda is not working for specific packages and don’t use pip with the —under argument, avoid al users installs.</em></p><h3 id="0e4249b8-16a4-40b7-b4d3-7cd216623ce4" class="">5. Export environment configurations as a YAML file</h3><pre id="bd7418aa-9b75-47bf-a86a-b963e6a47516" class="code"><code># Activate environment
+# For the ones saved in the default folder
+conda activate &lt;ENVIRONMENT-NAME&gt;
+# OR the ones saved in a user-defined folder
+conda activate &lt;USER-DEFINED-ENVIRONMENT-PATH&gt;
+
+# Export as a YAML file
+conda env export &gt; environment.yml</code></pre><h3 id="1911038a-0caf-4fea-b2b0-1ad51946ff9d" class="">6. Cheatsheet of environment management in conda <a href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#determining-your-current-environment">🔗</a></h3><ul id="5d2bb04e-bfd7-4798-9d1d-9025708c4e0e" class="bulleted-list"><li>List all environments. Note this </li></ul><pre id="b9ee7f33-4bff-4145-801d-dcac80c626c4" class="code"><code>conda env list</code></pre><ul id="f1d6f4a3-ed76-4347-807b-4464e9eb81d1" class="bulleted-list"><li>Clone an environment </li></ul><pre id="2812d1d4-2de4-4f1e-9228-1645b3b79c54" class="code"><code>conda create --name &lt;NAME-OF-ENVIRONMENT&gt; --clone &lt;NEW-NAME&gt;</code></pre><ul id="feea2a4f-20f8-4cfe-971c-e6fd3fb3ff50" class="bulleted-list"><li>Update an environment from a yaml file</li></ul><pre id="69829c27-25eb-40fe-a0a3-ec7752e3fa55" class="code"><code>conda env update --prefix &lt;YAML-FILE-FOLDER&gt; --file &lt;YMAL-FILE-NAME&gt;.yml --prune</code></pre><p id="183688f8-b968-4d7f-a248-21a9e468ba74" class=""><em>Note: The --prune option causes conda to remove any dependencies that are no longer required from the environment.</em></p><ul id="a1c8329f-062a-4d5a-bfec-a57a5be0e5fc" class="bulleted-list"><li>Deactivate an environment</li></ul><pre id="add4c343-e616-4661-b4ff-6fd394dcf849" class="code"><code># For an environment in the default folder
+conda deactivate &lt;NAME-OF-ENVIRONMENT&gt;
+
+# For an environment saved in a user-defined folder
+conda deactivate &lt;USER-DEFINED-ENVIRONMENT-PATH&gt;</code></pre><ul id="0f37a6b9-645e-44ef-b47a-fa8b41f11354" class="bulleted-list"><li>Remove an environment </li></ul><pre id="936f064a-02d0-45d2-a0f7-8e0c9abc1e9a" class="code"><code># For an environment in the default folder
+conda remove --name &lt;NAME-OF-ENVIRONMENT&gt; --all
+
+# For an environment saved in a user-defined folder
+conda remove --prefix &lt;USER-DEFINED-ENVIRONMENT-PATH&gt; --all</code></pre><h2 id="5d73e846-4302-4b62-b41d-0790772cdfa8" class=""><mark class="highlight-orange">Set up environment in PyCharm</mark></h2><p id="d868b990-9338-45fe-9b69-8cac0c3665d8" class="">Let’s say you want to set a virtual environment for one of your python projects. Please open your python project in PyCharm and go through the following steps.</p><p id="468db299-b798-4ee2-aa51-d96f470e8313" class="">Aside from creating a virtual environment using conda and command prompt, you can also create and manage virtual environment in PyCharm through the following steps.</p><ol type="1" id="61a30cca-df65-4925-8a09-af049cfa4323" class="numbered-list" start="1"><li>Click the bottom right to open a list of python interpretersuser and click <code>Interpreter Settings</code> </li></ol><figure id="9571ee3a-bc53-4695-a11b-142edf8040e1" class="image"><a href="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%202.png"><img style="width:2558px" src="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%202.png"/></a></figure><figure id="92ac5eb6-d19e-4e22-88cd-c2e74cf465d0" class="image"><a href="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%203.png"><img style="width:1970px" src="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%203.png"/></a></figure><ol type="1" id="d9b27cd2-db8d-449c-a54c-376c4b160d3b" class="numbered-list" start="2"><li>Click the gear icon on the upper right corner and click <code>Add…</code></li></ol><figure id="b58d581e-3b27-4462-8068-f31cf9b3021c" class="image"><a href="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%204.png"><img style="width:2098px" src="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%204.png"/></a></figure><ol type="1" id="08c93636-741e-42ca-ba71-90feb5651150" class="numbered-list" start="3"><li>Go to <code>Conda Environment</code> → Chose <code>New environment</code> → Specify the environment folder path and the folder name. A new folder will be created under the project root folder. → Select the python version → Select the Conda excitable if you have multiple conda installed. → Click <code>OK</code> </li></ol><figure id="53b76847-f336-4f31-b6ae-1432d578ec10" class="image"><a href="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%205.png"><img style="width:1704px" src="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%205.png"/></a></figure><ol type="1" id="ac57ac51-2f62-40a5-8f2c-3a2f5c0ed095" class="numbered-list" start="4"><li>Click <code>Show All</code> to see all the python environment. You can modify the name of environment in the new window. At the same time, you can see some basic packages are already installed in the new environment.</li></ol><figure id="2cdaccf6-4032-4b22-a083-a672a2371d50" class="image"><a href="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%206.png"><img style="width:1972px" src="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%206.png"/></a></figure><figure id="82ace1de-ead2-4d16-9881-cd2ad2cfea69" class="image"><a href="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%207.png"><img style="width:1262px" src="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%207.png"/></a></figure><p id="38c2d2c1-a6db-408e-805c-3414a1f5e47c" class="">Go back to the main interface, and you should see the new environment you just created.</p><figure id="4f2cd279-8bd3-42d2-862a-e9784f3a254f" class="image"><a href="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%208.png"><img style="width:2560px" src="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%208.png"/></a></figure><ol type="1" id="10650bb1-6850-48db-ab65-d5e6ad515e1f" class="numbered-list" start="5"><li>Manage libraries in PyCharm - To manage libraries in the virtual environment, go to <code>Python Interpreter Setting</code>. Click <code>+</code></li></ol><figure id="5fb3ff27-e549-4e6d-8c43-affe2dc8c10e" class="image"><a href="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%209.png"><img style="width:1976px" src="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%209.png"/></a></figure><p id="4786d1a5-9aef-4cb1-a9d5-37f330a104ba" class="">In the new window, search for package → Select the package → Specify version on the right panel. You can skip this step to install the latest version → Click <code>Install Package</code></p><p id="16a02d41-f19f-46c7-aed9-0fb3a03af389" class=""><em>Note: if you cannot find the packages, please go to Terminal in PyCharm and install the package through pip</em>.</p><figure id="2e9ac4ac-0a32-4811-a72a-61ef7b226ee0" class="image"><a href="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%2010.png"><img style="width:1862px" src="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%2010.png"/></a></figure><p id="a04773d9-3981-40a4-9727-6ec4df76968d" class="">Go back to the previous window, you should now see the package and associated dependencies in the list of installed packages.</p><figure id="ea15e329-dcca-4ae9-9c19-2a87cf6f7441" class="image"><a href="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%2011.png"><img style="width:1976px" src="Set%20up%20multiple%20environments%20for%20Python%20project%20-%20%20693e8dbccf364f1daa793e07c76999d6/Untitled%2011.png"/></a></figure><h1 id="c57fbdba-3992-4fc3-a3a3-1febacd922b5" class=""><mark class="highlight-orange">Best practice</mark></h1><h2 id="fec83a4a-1346-4d98-9cf2-52793089edbf" class="">One project one environment</h2><p id="452165e6-67a0-4568-983a-f29e77325c8e" class="">It is recommended to create a separate environment for each project and save the environment under the project directory and name it as env.</p><h2 id="b1369890-6581-4be9-ae27-33d2ddb2a5a4" class="">Conda or pip? It is not a single choice question.</h2><p id="80c90b20-bed3-4a2f-89a6-879996043045" class="">In conda environment, you can still use pip to install libraries. Please use conda for most of the package installation and pip for packages cannot be installed using conda.</p><h1 id="84c9fcc9-5b64-4a95-896d-c5c39f3e2a84" class=""><mark class="highlight-orange">Reference</mark></h1><figure id="05b7a8a3-ba0f-438e-969f-ddd20789a57c"><a href="https://ealizadeh.com/blog/guide-to-python-env-pkg-dependency-using-conda-poetry" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">A Guide to Python Environment, Dependency and Package Management: Conda + Poetry</div><div class="bookmark-description">If you work on multiple Python projects at different development stages, you probably have different environments on your system. There are various tools for creating an isolated environment and install the libraries you need for your project.</div></div><div class="bookmark-href"><img src="https://s3.amazonaws.com/super-notion/images/0bfc1010-dafe-440c-bd66-5f527cc99e7e.png" class="icon bookmark-icon"/>https://ealizadeh.com/blog/guide-to-python-env-pkg-dependency-using-conda-poetry</div></div><img src="https://super-static-assets.s3.amazonaws.com/8f45149e-e437-4fac-b1f5-df8c7f6255ec/images/d5f03bc0-0152-47bf-bec8-3c6706482f62.png" class="bookmark-image"/></a></figure><figure id="6fc9fa5b-c403-4470-9e61-6a83de8c64b8"><div class="source"><a href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html">https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html</a></div></figure><p id="8cac0492-f426-47dc-a9fd-c5eca3cdb47b" class="">
+</p></div></article></body></html>
