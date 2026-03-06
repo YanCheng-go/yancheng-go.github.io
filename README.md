@@ -68,5 +68,5 @@ GITHUB_TOKEN=your_token bash scripts/sync-github.sh
 
 ## License
 
-Yan Cheng reserves the copyright of all contents in this repository.
-You are welcome to clone and customize it to create your own website.
+This project is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).
+You are welcome to clone and customize it for non-commercial use with attribution.
