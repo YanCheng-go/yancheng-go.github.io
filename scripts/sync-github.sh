@@ -90,10 +90,22 @@ SCHOLAR_HTML=$(curl -sL "https://scholar.google.com/citations?user=${SCHOLAR_USE
 TOTAL_CITATIONS=$(echo "$SCHOLAR_HTML" | grep -o 'gsc_rsb_std">[^<]*' | head -1 | sed 's/gsc_rsb_std">//')
 H_INDEX=$(echo "$SCHOLAR_HTML" | grep -o 'gsc_rsb_std">[^<]*' | head -3 | tail -1 | sed 's/gsc_rsb_std">//')
 
+# Validate Scholar data before proceeding
+if [ -z "$TOTAL_CITATIONS" ] || [ -z "$H_INDEX" ]; then
+  echo "WARNING: Scholar scraping returned empty data. Skipping Scholar update."
+  echo "TOTAL_CITATIONS='$TOTAL_CITATIONS' H_INDEX='$H_INDEX'"
+  SKIP_SCHOLAR=true
+fi
+
 # Extract triples: title, citations, year
 TITLES=$(echo "$SCHOLAR_HTML" | grep -o 'gsc_a_at">[^<]*' | sed 's/gsc_a_at">//' | sed "s/&#39;/'/g")
 CITES=$(echo "$SCHOLAR_HTML" | grep -o 'gsc_a_ac gs_ibl">[^<]*' | sed 's/gsc_a_ac gs_ibl">//')
 YEARS=$(echo "$SCHOLAR_HTML" | grep -o 'gsc_a_h gsc_a_hc gs_ibl">[^<]*' | sed 's/gsc_a_h gsc_a_hc gs_ibl">//')
+
+if [ -z "$TITLES" ]; then
+  echo "WARNING: No publication titles found from Scholar. Skipping Scholar update."
+  SKIP_SCHOLAR=true
+fi
 
 PUB_COUNT=$(echo "$TITLES" | wc -l | tr -d ' ')
 
@@ -153,27 +165,37 @@ echo "$STATS_HTML" > "$TMPDIR/stats.txt"
 echo "$BIO_HTML" > "$TMPDIR/bio.txt"
 echo "$PINNED_SECTION" > "$TMPDIR/pinned.txt"
 echo "$RECENT_SECTION" > "$TMPDIR/recent.txt"
-echo "$SCHOLAR_SECTION" > "$TMPDIR/scholar.txt"
-echo "$SCHOLAR_STATS_HTML" > "$TMPDIR/scholar_stats.txt"
 
 # ---- Replace sections in index.html ----
 
+# Always update GitHub data (stats, bio, pinned, recent)
 perl -i -0777 -pe '
   BEGIN {
     local $/; open F, "'"$TMPDIR/stats.txt"'"; $stats = <F>; chomp $stats; close F;
     open F, "'"$TMPDIR/bio.txt"'"; $bio = <F>; chomp $bio; close F;
     open F, "'"$TMPDIR/pinned.txt"'"; $pinned = <F>; chomp $pinned; close F;
     open F, "'"$TMPDIR/recent.txt"'"; $recent = <F>; chomp $recent; close F;
-    open F, "'"$TMPDIR/scholar.txt"'"; $scholar = <F>; chomp $scholar; close F;
-    open F, "'"$TMPDIR/scholar_stats.txt"'"; $sstats = <F>; chomp $sstats; close F;
   }
   s|(<!-- SYNC:STATS_START -->).*?(<!-- SYNC:STATS_END -->)|$1\n$stats\n          $2|s;
   s|(<!-- SYNC:BIO_START -->).*?(<!-- SYNC:BIO_END -->)|$1\n$bio\n          $2|s;
   s|(<!-- SYNC:PINNED_START -->).*?(<!-- SYNC:PINNED_END -->)|$1\n$pinned\n    $2|s;
   s|(<!-- SYNC:RECENT_START -->).*?(<!-- SYNC:RECENT_END -->)|$1\n$recent\n    $2|s;
-  s|(<!-- SYNC:SCHOLAR_START -->).*?(<!-- SYNC:SCHOLAR_END -->)|$1\n$scholar\n    $2|s;
-  s|(<!-- SYNC:SCHOLAR_STATS_START -->).*?(<!-- SYNC:SCHOLAR_STATS_END -->)|$1\n$sstats\n          $2|s;
 ' "$FILE"
+
+# Only update Scholar data if scraping succeeded
+if [ "${SKIP_SCHOLAR:-false}" != "true" ]; then
+  echo "$SCHOLAR_SECTION" > "$TMPDIR/scholar.txt"
+  echo "$SCHOLAR_STATS_HTML" > "$TMPDIR/scholar_stats.txt"
+
+  perl -i -0777 -pe '
+    BEGIN {
+      local $/; open F, "'"$TMPDIR/scholar.txt"'"; $scholar = <F>; chomp $scholar; close F;
+      open F, "'"$TMPDIR/scholar_stats.txt"'"; $sstats = <F>; chomp $sstats; close F;
+    }
+    s|(<!-- SYNC:SCHOLAR_START -->).*?(<!-- SYNC:SCHOLAR_END -->)|$1\n$scholar\n    $2|s;
+    s|(<!-- SYNC:SCHOLAR_STATS_START -->).*?(<!-- SYNC:SCHOLAR_STATS_END -->)|$1\n$sstats\n          $2|s;
+  ' "$FILE"
+fi
 
 rm -rf "$TMPDIR"
 

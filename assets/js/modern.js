@@ -4,6 +4,8 @@
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let w, h, particles, mouse;
+  let animating = false;
+  let rafId = null;
 
   function resize() {
     w = canvas.width = canvas.offsetWidth;
@@ -27,6 +29,7 @@
   }
 
   function draw() {
+    if (!animating) return;
     ctx.clearRect(0, 0, w, h);
     const maxDist = 140;
     for (let i = 0; i < particles.length; i++) {
@@ -71,7 +74,21 @@
         ctx.stroke();
       }
     }
-    requestAnimationFrame(draw);
+    rafId = requestAnimationFrame(draw);
+  }
+
+  // Pause animation when hero section is off-screen
+  var hero = canvas.closest('.hero');
+  if (hero) {
+    var heroObserver = new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) {
+        if (!animating) { animating = true; draw(); }
+      } else {
+        animating = false;
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      }
+    }, { threshold: 0 });
+    heroObserver.observe(hero);
   }
 
   canvas.addEventListener('mousemove', function (e) {
@@ -82,6 +99,7 @@
 
   window.addEventListener('resize', resize);
   init();
+  animating = true;
   draw();
 })();
 
@@ -515,10 +533,14 @@
 
   async function castVote(pet) {
     if (!sb) return;
-    // Increment via rpc or manual read+write
-    var { data } = await sb.from('pet_votes').select('count').eq('pet', pet).single();
-    if (data) {
-      await sb.from('pet_votes').update({ count: data.count + 1 }).eq('pet', pet);
+    // Atomic increment via rpc; falls back to read+write if rpc not available
+    try {
+      await sb.rpc('increment_vote', { pet_type: pet });
+    } catch (_) {
+      var { data } = await sb.from('pet_votes').select('count').eq('pet', pet).single();
+      if (data) {
+        await sb.from('pet_votes').update({ count: data.count + 1 }).eq('pet', pet);
+      }
     }
     fetchVotes();
   }
@@ -547,9 +569,13 @@
         // Decrement old, increment new
         (async function () {
           if (!sb) return;
-          var { data: oldData } = await sb.from('pet_votes').select('count').eq('pet', prevVote).single();
-          if (oldData && oldData.count > 0) {
-            await sb.from('pet_votes').update({ count: oldData.count - 1 }).eq('pet', prevVote);
+          try {
+            await sb.rpc('decrement_vote', { pet_type: prevVote });
+          } catch (_) {
+            var { data: oldData } = await sb.from('pet_votes').select('count').eq('pet', prevVote).single();
+            if (oldData && oldData.count > 0) {
+              await sb.from('pet_votes').update({ count: oldData.count - 1 }).eq('pet', prevVote);
+            }
           }
           castVote(mode);
         })();

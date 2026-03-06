@@ -823,9 +823,9 @@ a:hover {
   border-color: var(--accent);
 }
 
-.pet-vote-btn:not(.active) {
-  border-color: var(--border) !important;
-  background: none !important;
+.pet-vote .pet-vote-btn:not(.active) {
+  border-color: var(--border);
+  background: none;
 }
 
 .pet-vote-btn.active {
