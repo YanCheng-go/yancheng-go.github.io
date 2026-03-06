@@ -1,0 +1,35 @@
+name: Watch for New Repos
+
+on:
+  schedule:
+    # Check every 6 hours
+    - cron: '0 */6 * * *'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check repo count and trigger sync if changed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          USERNAME="YanCheng-go"
+          CURRENT=$(curl -sf "https://api.github.com/users/$USERNAME" | jq '.public_repos')
+
+          # Fetch last known count from a gist or use the Actions cache
+          CACHE_KEY="repo-count"
+          LAST_COUNT="${{ vars.REPO_COUNT || '0' }}"
+
+          echo "Last: $LAST_COUNT, Current: $CURRENT"
+
+          if [ "$CURRENT" != "$LAST_COUNT" ] && [ "$CURRENT" != "null" ]; then
+            echo "Repo count changed ($LAST_COUNT -> $CURRENT), triggering sync..."
+
+            # Update the variable for next run
+            gh variable set REPO_COUNT --body "$CURRENT" --repo "$USERNAME/yancheng-go.github.io"
+
+            # Trigger the sync workflow
+            gh workflow run sync-github.yml --repo "$USERNAME/yancheng-go.github.io"
+          else
+            echo "No change in repo count."
+          fi

@@ -2,9 +2,11 @@ name: Sync GitHub Profile
 
 on:
   schedule:
-    # Runs every Monday at 6:00 UTC
-    - cron: '0 6 * * 1'
-  workflow_dispatch: # Allow manual trigger
+    # Runs daily at 6:00 UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch: # Allow manual trigger from Actions tab
+  repository_dispatch: # Allow programmatic trigger via API
+    types: [sync]
 
 permissions:
   contents: write
