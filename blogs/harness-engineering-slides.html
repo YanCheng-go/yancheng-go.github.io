@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harness Engineering — v7</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css">
+<style>
+  :root {
+    --r-background-color: #000;
+    --r-main-color: #f5f5f7;
+    --r-heading-color: #f5f5f7;
+    --r-link-color: #2997ff;
+    --r-selection-background-color: #2997ff;
+    --accent: #2997ff;
+    --green: #30d158;
+    --purple: #bf5af2;
+    --orange: #ff9f0a;
+    --red: #ff453a;
+    --dim: rgba(245, 245, 247, 0.5);
+  }
+  .reveal { font-size: 32px; font-family: -apple-system, "SF Pro Display", "Inter", "Helvetica Neue", sans-serif; font-weight: 300; }
+  .reveal h1, .reveal h2, .reveal h3 { font-weight: 700; text-transform: none; letter-spacing: -0.02em; }
+  .reveal h1 { font-size: 2.2em; }
+  .reveal h2 { font-size: 1.7em; }
+  .reveal section { text-align: center; }
+  .reveal .accent { color: var(--accent); }
+  .reveal .green { color: var(--green); }
+  .reveal .purple { color: var(--purple); }
+  .reveal .orange { color: var(--orange); }
+  .reveal .red { color: var(--red); }
+  .reveal .dim { color: var(--dim); }
+  .reveal .label { font-size: 1.05em; font-weight: 300; color: var(--dim); margin-top: 0.5em; }
+  .reveal .big-number { font-size: 3.5em; font-weight: 700; color: var(--accent); line-height: 1; margin: 0; }
+  .reveal .quote { font-size: 1.2em; font-style: italic; font-weight: 400; line-height: 1.4; max-width: 750px; margin: 0 auto; }
+  .reveal .attribution { font-size: 0.7em; color: var(--dim); margin-top: 1em; }
+  .reveal .slide-number { display: none; }
+  .reveal svg text { font-family: -apple-system, "SF Pro Display", "Inter", sans-serif; }
+
+  /* Icon cards */
+  .icon-card {
+    display: inline-flex; flex-direction: column; align-items: center;
+    padding: 0.8em; border-radius: 1em; min-width: 130px; max-width: 160px;
+    text-align: center; vertical-align: top;
+  }
+  .icon-card .ic { font-size: 2em; margin-bottom: 0.2em; line-height: 1; }
+  .icon-card .ic-label { font-size: 0.6em; font-weight: 600; margin-bottom: 0.1em; }
+  .icon-card .ic-sub { font-size: 0.48em; color: var(--dim); line-height: 1.4; }
+
+  /* Fail-fix rows */
+  .ff-row { display: flex; justify-content: center; align-items: center; gap: 0.6em; margin: 0.4em 0; }
+  .ff-item { display: inline-flex; align-items: center; gap: 0.5em; padding: 0.5em 1em; border-radius: 0.8em; font-size: 0.7em; }
+  .ff-arrow { font-size: 1.2em; color: var(--dim); }
+
+  /* Bullet with icon */
+  .ib { display: flex; align-items: flex-start; gap: 0.5em; margin: 0.35em 0; font-size: 0.62em; line-height: 1.5; }
+  .ib svg { flex-shrink: 0; margin-top: 0.15em; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ============================================================ -->
+<!-- SLIDE 1: Title + Proof -->
+<!-- ============================================================ -->
+<section>
+  <p style="font-size:0.8em; color:var(--dim); line-height:1.6;">
+    OpenAI shipped code to production with <span class="accent" style="font-weight:600;">zero manually-written code</span>.
+  </p>
+  <p class="fragment fade-up" style="font-size:0.75em; color:var(--dim); margin-top:0.5em;">
+    <span style="color:#f5f5f7;">7 engineers</span> ·
+    <span style="color:#f5f5f7;">5 months</span> ·
+    <span class="accent" style="font-weight:700;">1M</span> AI-generated code ·
+    <span class="orange" style="font-weight:700;">10×</span> faster
+  </p>
+  <div class="fragment fade-up" style="margin-top:1.5em;">
+    <h1 style="font-size:2em; margin:0;">Harness<br><span class="accent">Engineering</span></h1>
+    <p class="label" style="margin-top:0.3em;">The discipline that made it possible</p>
+  </div>
+  <p style="font-size:0.6em; color:var(--dim); margin-top:2em;">Yan Cheng · March 6, 2026</p>
+  <aside class="notes">
+    "The OpenAI Codex team shipped a real product — internal daily users, external alpha testers — with zero manually-written code. A million lines, 7 engineers, 5 months, ten times faster than traditional development.
+
+    How? Not better prompts. Not better models. Through something they call harness engineering — the discipline of building environments that make AI agents reliable.
+
+    Let me show you what that looks like."
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 2: Movie Gif -->
+<!-- ============================================================ -->
+<section data-transition="fade">
+  <p style="font-size:1.1em; color:var(--dim); font-weight:300; margin-bottom:0.5em;">Every tech movie ever...</p>
+  <img src="hacking-scene.gif" alt="Classic movie hacking scene with progress bar" style="max-width:620px; border-radius:12px; border:1px solid rgba(245,245,247,0.1); box-shadow: 0 8px 40px rgba(0,0,0,0.6);">
+  <p class="label" style="margin-top:0.6em;">Scrolling logs. Progress bar. One person watching.</p>
+  <p class="fragment fade-up" style="font-size:1.15em; margin-top:0.5em; font-weight:500;">We're <span class="accent">actually getting there.</span></p>
+  <aside class="notes">
+    "It basically looked like this. Remember every sci-fi movie? Someone sits in front of a terminal, logs scrolling, progress bar filling, then DONE.
+
+    That's what it looks like now when you run Claude Code or Codex. You describe what you want, logs scroll, it generates, tests, deploys. You just watch.
+
+    But the movie scene skips the interesting part — what makes it actually work? How did they get those numbers?"
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 4: Flowchart — What did the engineers actually do? -->
+<!-- ============================================================ -->
+<section style="overflow:visible;">
+  <h2>Agents, humans, and the <span class="accent">harness</span></h2>
+  <div style="position:relative; width:850px; margin:0 auto; transform:scale(1.2); transform-origin:top center;">
+
+    <!-- LAYER 1: Skeleton — box outlines + titles + main arrows -->
+    <svg viewBox="0 0 900 530" width="850" style="display:block;">
+      <defs>
+        <marker id="fa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(245,245,247,0.3)"/>
+        </marker>
+        <marker id="fg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(48,209,88,0.5)"/>
+        </marker>
+        <marker id="fb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(41,151,255,0.5)"/>
+        </marker>
+        <marker id="fp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(191,90,242,0.5)"/>
+        </marker>
+        <marker id="fr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(255,69,58,0.4)"/>
+        </marker>
+      </defs>
+
+      <!-- Harness box + title -->
+      <rect x="70" y="8" width="760" height="120" rx="16" fill="rgba(48,209,88,0.02)" stroke="rgba(48,209,88,0.25)" stroke-width="1.5"/>
+      <text x="450" y="32" text-anchor="middle" fill="#30d158" font-size="13" font-weight="700" letter-spacing="1">THE HARNESS (ENVIRONMENT)</text>
+      <text x="450" y="48" text-anchor="middle" fill="rgba(48,209,88,0.5)" font-size="9" letter-spacing="0.5">WHERE AGENTS LIVE AND ENGINEERS MAINTAIN</text>
+
+      <!-- Arrows harness → agents -->
+      <line x1="340" y1="128" x2="340" y2="155" stroke="rgba(48,209,88,0.35)" stroke-width="2" marker-end="url(#fg)"/>
+      <line x1="560" y1="128" x2="560" y2="155" stroke="rgba(191,90,242,0.35)" stroke-width="2" marker-end="url(#fp)"/>
+      <text x="310" y="145" text-anchor="middle" fill="rgba(245,245,247,0.25)" font-size="9">read + write</text>
+      <text x="600" y="145" text-anchor="middle" fill="rgba(245,245,247,0.25)" font-size="9">observe + act</text>
+
+      <!-- Agents box + title -->
+      <rect x="70" y="158" width="760" height="200" rx="16" fill="rgba(255,159,10,0.03)" stroke="rgba(255,159,10,0.25)" stroke-width="1.5"/>
+      <text x="450" y="182" text-anchor="middle" fill="#ff9f0a" font-size="13" font-weight="700" letter-spacing="1">AGENTS GENERATE EVERYTHING</text>
+
+      <!-- Arrow agents → struggles -->
+      <line x1="600" y1="358" x2="600" y2="382" stroke="rgba(255,69,58,0.3)" stroke-width="2" marker-end="url(#fr)"/>
+
+      <!-- Struggles box + title -->
+      <rect x="420" y="385" width="400" height="48" rx="12" fill="rgba(255,69,58,0.04)" stroke="rgba(255,69,58,0.2)" stroke-width="1.5" stroke-dasharray="6,3"/>
+      <text x="620" y="413" text-anchor="middle" fill="#ff453a" font-size="13" font-weight="600">Agent struggles?</text>
+
+      <!-- Humans box + title -->
+      <rect x="70" y="385" width="330" height="120" rx="14" fill="rgba(41,151,255,0.04)" stroke="rgba(41,151,255,0.25)" stroke-width="1.5"/>
+      <text x="235" y="407" text-anchor="middle" fill="#2997ff" font-size="12" font-weight="700" letter-spacing="1">HUMANS — PROACTIVE</text>
+    </svg>
+
+    <!-- LAYER 2: Harness details (click 1) -->
+    <svg class="fragment fade-up" viewBox="0 0 900 530" width="850" style="position:absolute; top:0; left:0;">
+      <!-- Harness: Repository items -->
+      <text x="260" y="66" text-anchor="middle" fill="#30d158" font-size="10" font-weight="600">Repository — Single Source of Truth</text>
+      <rect x="90"  y="74" width="80" height="26" rx="6" fill="rgba(48,209,88,0.06)" stroke="rgba(48,209,88,0.12)" stroke-width="1"/>
+      <text x="130" y="92" text-anchor="middle" fill="#30d158" font-size="9.5">AGENTS.md</text>
+      <rect x="176" y="74" width="80" height="26" rx="6" fill="rgba(48,209,88,0.06)" stroke="rgba(48,209,88,0.12)" stroke-width="1"/>
+      <text x="216" y="92" text-anchor="middle" fill="#30d158" font-size="9.5">Architecture</text>
+      <rect x="262" y="74" width="80" height="26" rx="6" fill="rgba(48,209,88,0.06)" stroke="rgba(48,209,88,0.12)" stroke-width="1"/>
+      <text x="302" y="92" text-anchor="middle" fill="#30d158" font-size="9.5">Conventions</text>
+      <rect x="348" y="74" width="85" height="26" rx="6" fill="rgba(41,151,255,0.07)" stroke="rgba(41,151,255,0.18)" stroke-width="1"/>
+      <text x="390" y="92" text-anchor="middle" fill="#2997ff" font-size="9.5">Specs/Criteria</text>
+      <text x="260" y="114" text-anchor="middle" fill="rgba(48,209,88,0.4)" font-size="8.5" font-style="italic">Enforce invariants, not implementations</text>
+
+      <line x1="450" y1="56" x2="450" y2="120" stroke="rgba(245,245,247,0.06)" stroke-width="1"/>
+
+      <!-- Harness: Tooling items -->
+      <text x="660" y="66" text-anchor="middle" fill="#bf5af2" font-size="10" font-weight="600">Tooling for Self QA</text>
+      <rect x="470" y="74" width="90" height="26" rx="6" fill="rgba(191,90,242,0.06)" stroke="rgba(191,90,242,0.12)" stroke-width="1"/>
+      <text x="515" y="92" text-anchor="middle" fill="#bf5af2" font-size="9.5">DevTools MCP</text>
+      <rect x="566" y="74" width="90" height="26" rx="6" fill="rgba(191,90,242,0.06)" stroke="rgba(191,90,242,0.12)" stroke-width="1"/>
+      <text x="611" y="92" text-anchor="middle" fill="#bf5af2" font-size="9.5">Logs/Metrics</text>
+      <rect x="662" y="74" width="70" height="26" rx="6" fill="rgba(191,90,242,0.06)" stroke="rgba(191,90,242,0.12)" stroke-width="1"/>
+      <text x="697" y="92" text-anchor="middle" fill="#bf5af2" font-size="9.5">Linters</text>
+      <rect x="738" y="74" width="75" height="26" rx="6" fill="rgba(191,90,242,0.06)" stroke="rgba(191,90,242,0.12)" stroke-width="1"/>
+      <text x="775" y="92" text-anchor="middle" fill="#bf5af2" font-size="9.5">Traces</text>
+      <text x="660" y="114" text-anchor="middle" fill="rgba(191,90,242,0.4)" font-size="8.5" font-style="italic">Agents validate their own work</text>
+    </svg>
+
+    <!-- LAYER 3: Agent details (click 2) -->
+    <svg class="fragment fade-up" viewBox="0 0 900 530" width="850" style="position:absolute; top:0; left:0;">
+      <!-- Agent output cards -->
+      <rect x="95"  y="195" width="130" height="36" rx="8" fill="rgba(48,209,88,0.06)" stroke="rgba(48,209,88,0.18)" stroke-width="1"/>
+      <text x="160" y="218" text-anchor="middle" fill="#30d158" font-size="11" font-weight="600">Product code</text>
+      <rect x="237" y="195" width="100" height="36" rx="8" fill="rgba(48,209,88,0.06)" stroke="rgba(48,209,88,0.18)" stroke-width="1"/>
+      <text x="287" y="218" text-anchor="middle" fill="#30d158" font-size="11" font-weight="600">Tests</text>
+      <rect x="349" y="195" width="120" height="36" rx="8" fill="rgba(48,209,88,0.06)" stroke="rgba(48,209,88,0.18)" stroke-width="1"/>
+      <text x="409" y="218" text-anchor="middle" fill="#30d158" font-size="11" font-weight="600">CI/CD + Tools</text>
+      <rect x="481" y="195" width="130" height="36" rx="8" fill="rgba(48,209,88,0.06)" stroke="rgba(48,209,88,0.18)" stroke-width="1"/>
+      <text x="546" y="218" text-anchor="middle" fill="#30d158" font-size="11" font-weight="600">Documentation</text>
+      <rect x="623" y="195" width="185" height="36" rx="8" fill="rgba(48,209,88,0.06)" stroke="rgba(48,209,88,0.18)" stroke-width="1"/>
+      <text x="715" y="218" text-anchor="middle" fill="#30d158" font-size="11" font-weight="600">Reviews + Linters</text>
+
+      <!-- Workflow bar -->
+      <rect x="140" y="245" width="620" height="32" rx="8" fill="rgba(255,159,10,0.06)" stroke="rgba(255,159,10,0.18)" stroke-width="1"/>
+      <text x="450" y="266" text-anchor="middle" fill="#ff9f0a" font-size="11" font-weight="500">Open PRs → self-review → agent-to-agent review → update → merge</text>
+
+      <!-- GC bar -->
+      <rect x="140" y="287" width="620" height="32" rx="8" fill="rgba(191,90,242,0.05)" stroke="rgba(191,90,242,0.18)" stroke-width="1" stroke-dasharray="5,3"/>
+      <text x="450" y="308" text-anchor="middle" fill="#bf5af2" font-size="11" font-weight="500">Garbage collection — periodic scans for drift, violations → auto-fix PRs</text>
+
+      <!-- Iterate loop -->
+      <path d="M 760 264 Q 810 264 810 225 Q 810 195 770 195" fill="none" stroke="rgba(255,159,10,0.3)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#fa)"/>
+      <text x="825" y="232" text-anchor="middle" fill="rgba(255,159,10,0.35)" font-size="9" font-weight="500" transform="rotate(90, 825, 232)">iterate</text>
+    </svg>
+
+    <!-- LAYER 4: Loops + Human details (click 3) -->
+    <svg class="fragment fade-up" viewBox="0 0 900 530" width="850" style="position:absolute; top:0; left:0;">
+      <defs>
+        <marker id="fg2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(48,209,88,0.5)"/>
+        </marker>
+        <marker id="fb2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(41,151,255,0.5)"/>
+        </marker>
+      </defs>
+
+      <!-- Agent self-fix loop -->
+      <path d="M 820 409 Q 870 409 870 285 Q 870 195 830 195" fill="none" stroke="rgba(48,209,88,0.35)" stroke-width="2" marker-end="url(#fg2)"/>
+      <text x="885" y="305" text-anchor="middle" fill="rgba(48,209,88,0.45)" font-size="9" font-weight="600" transform="rotate(90, 885, 305)">agent self-fix loop</text>
+
+      <!-- Human detail items -->
+      <rect x="85" y="418" width="300" height="26" rx="6" fill="rgba(41,151,255,0.06)" stroke="rgba(41,151,255,0.12)" stroke-width="1"/>
+      <text x="235" y="436" text-anchor="middle" fill="#2997ff" font-size="10" font-weight="600">Design systems <tspan fill="rgba(245,245,247,0.4)" font-weight="400">— linters, GC, structural tests</tspan></text>
+      <rect x="85" y="450" width="300" height="26" rx="6" fill="rgba(41,151,255,0.06)" stroke="rgba(41,151,255,0.12)" stroke-width="1"/>
+      <text x="235" y="468" text-anchor="middle" fill="#2997ff" font-size="10" font-weight="600">Define intent <tspan fill="rgba(245,245,247,0.4)" font-weight="400">— specs, criteria → .md files</tspan></text>
+      <rect x="85" y="482" width="300" height="26" rx="6" fill="rgba(41,151,255,0.06)" stroke="rgba(41,151,255,0.12)" stroke-width="1"/>
+      <text x="235" y="500" text-anchor="middle" fill="#2997ff" font-size="10" font-weight="600">Prioritize work <tspan fill="rgba(245,245,247,0.4)" font-weight="400">— decide what matters next</tspan></text>
+
+      <!-- Humans → harness -->
+      <path d="M 70 445 Q 42 445 42 70 Q 42 40 70 40" fill="none" stroke="rgba(41,151,255,0.3)" stroke-width="2" stroke-dasharray="8,4" marker-end="url(#fb2)"/>
+      <text x="24" y="260" text-anchor="middle" fill="rgba(41,151,255,0.35)" font-size="9" font-weight="600" transform="rotate(-90, 24, 260)">build + update harness</text>
+    </svg>
+
+    <!-- LAYER 5: Diagnose gaps (click 4) -->
+    <svg class="fragment fade-up" viewBox="0 0 900 530" width="850" style="position:absolute; top:0; left:0;">
+      <defs>
+        <marker id="fb3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(41,151,255,0.5)"/>
+        </marker>
+      </defs>
+
+      <!-- Struggles detail text -->
+      <text x="620" y="423" text-anchor="middle" fill="rgba(245,245,247,0.5)" font-size="10">Identify gap → <tspan fill="#30d158" font-weight="600">agent implements the fix</tspan></text>
+
+      <!-- Escalate arrow -->
+      <line x1="620" y1="433" x2="620" y2="460" stroke="rgba(41,151,255,0.3)" stroke-width="2" marker-end="url(#fb3)"/>
+      <text x="638" y="450" text-anchor="start" fill="rgba(41,151,255,0.35)" font-size="9">escalate</text>
+
+      <!-- Diagnose gaps box -->
+      <rect x="420" y="463" width="400" height="40" rx="8" fill="rgba(41,151,255,0.06)" stroke="rgba(41,151,255,0.2)" stroke-width="1.5"/>
+      <text x="620" y="483" text-anchor="middle" fill="#2997ff" font-size="11" font-weight="600">Diagnose gaps</text>
+      <text x="620" y="497" text-anchor="middle" fill="rgba(245,245,247,0.4)" font-size="9.5">Missing tool / guardrail / doc? → improve harness</text>
+
+      <!-- Diagnose gaps → harness -->
+      <path d="M 820 483 Q 858 483 858 70 Q 858 40 830 40" fill="none" stroke="rgba(41,151,255,0.3)" stroke-width="2" stroke-dasharray="8,4" marker-end="url(#fb3)"/>
+      <text x="876" y="285" text-anchor="middle" fill="rgba(41,151,255,0.35)" font-size="9" font-weight="600" transform="rotate(90, 876, 285)">improve harness</text>
+    </svg>
+
+  </div>
+  <aside class="notes">
+    "Walk through this diagram in four clicks.
+
+    First click — the harness. Two halves: the repo as single source of truth — AGENTS.md, architecture, conventions, specs. And tooling for self QA — DevTools, logs, metrics, linters, traces. This is the environment agents live in.
+
+    Second click — what agents produce. Product code, tests, CI/CD, documentation, reviews. They open PRs, self-review, do agent-to-agent review, iterate, merge. Plus garbage collection — periodic background scans for drift.
+
+    Third click — the self-fix loop and humans. When agents struggle, they first try to self-fix — that green loop going back up. On the left, humans proactively: design systems, define intent, prioritize work. Both feed into the harness.
+
+    Fourth click — diagnose gaps. When self-fix fails, it escalates to humans. The question: what's missing — a tool, a guardrail, a doc? Fix that, and it feeds back up to improve the harness. Every gap closed makes all future work better.
+
+    The key insight: humans never write code. They build and improve the harness. The harness makes agents better. Agents generate everything."
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 5: Trial → error → better harness -->
+<!-- ============================================================ -->
+<section>
+  <h2>Trial → error → <span class="green">better harness</span></h2>
+  <div style="margin-top:1em;">
+    <div class="ff-row fragment fade-up">
+      <div class="ff-item" style="background:rgba(255,69,58,0.06); border:1px solid rgba(255,69,58,0.15);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff453a" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        <span class="dim">1000-line AGENTS.md</span>
+      </div>
+      <span class="ff-arrow">→</span>
+      <div class="ff-item" style="background:rgba(48,209,88,0.06); border:1px solid rgba(48,209,88,0.15);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#30d158" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span style="color:#f5f5f7;">~100-line map</span>
+        <span class="dim" style="margin-left:0.3em;">· discover on demand</span>
+      </div>
+    </div>
+    <div class="ff-row fragment fade-up">
+      <div class="ff-item" style="background:rgba(255,69,58,0.06); border:1px solid rgba(255,69,58,0.15);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff453a" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        <span class="dim">Manual cleanup Fridays</span>
+      </div>
+      <span class="ff-arrow">→</span>
+      <div class="ff-item" style="background:rgba(48,209,88,0.06); border:1px solid rgba(48,209,88,0.15);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#30d158" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span style="color:#f5f5f7;">Automated GC</span>
+        <span class="dim" style="margin-left:0.3em;">· agents scan + fix drift</span>
+      </div>
+    </div>
+    <div class="ff-row fragment fade-up">
+      <div class="ff-item" style="background:rgba(255,69,58,0.06); border:1px solid rgba(255,69,58,0.15);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff453a" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        <span class="dim">Context in Slack & Docs</span>
+      </div>
+      <span class="ff-arrow">→</span>
+      <div class="ff-item" style="background:rgba(48,209,88,0.06); border:1px solid rgba(48,209,88,0.15);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#30d158" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span style="color:#f5f5f7;">Everything in the repo</span>
+        <span class="dim" style="margin-left:0.3em;">· single source of truth</span>
+      </div>
+    </div>
+  </div>
+  <p class="fragment fade-up dim" style="font-size:0.65em; margin-top:1.2em; font-style:italic;">"When the agent struggled, they didn't try harder — they encoded what was missing."</p>
+  <aside class="notes">
+    "They didn't get it right on day one.
+
+    First: massive AGENTS.md — over a thousand lines. Agents pattern-matched locally instead of navigating intentionally. Fix: a ~100 line table of contents. Agents discover details on-demand.
+
+    Second: every Friday, manual cleanup. Ate 20% of their time. Fix: automated garbage collection — agents periodically scan for drift and open fix PRs themselves.
+
+    Third: knowledge scattered across Confluence, Teams, someone's head. Invisible to agents at runtime. Fix: everything versioned in the repo. If it isn't discoverable in the repo, it doesn't exist for the agent.
+
+    The pattern: every time something broke, they encoded what was missing. That's the key mindset shift."
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6a: Changed skills / requirements -->
+<!-- ============================================================ -->
+<section>
+  <h2>Transforming to <span class="accent">harness engineering</span>?</h2>
+  <p style="font-size:0.85em; color:var(--dim); margin-top:0.3em; font-weight:400;">Changed skills and requirements from engineers</p>
+
+  <!-- New skills row -->
+  <div class="fragment fade-up" style="display:flex; justify-content:center; gap:0.8em; margin-top:1.2em; flex-wrap:wrap;">
+    <div class="icon-card" style="background:rgba(41,151,255,0.04); border:1px solid rgba(41,151,255,0.12);">
+      <div class="ic">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#2997ff" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <div class="ic-label accent">Environment Design</div>
+      <div class="ic-sub">Structure repos + tooling<br>for agent navigation</div>
+    </div>
+    <div class="icon-card" style="background:rgba(191,90,242,0.04); border:1px solid rgba(191,90,242,0.12);">
+      <div class="ic">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#bf5af2" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/><path d="M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+      </div>
+      <div class="ic-label purple">Prompt Decomposition</div>
+      <div class="ic-sub">Break goals into<br>agent-tractable units</div>
+    </div>
+    <div class="icon-card" style="background:rgba(48,209,88,0.04); border:1px solid rgba(48,209,88,0.12);">
+      <div class="ic">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#30d158" stroke-width="1.5"><path d="M4 12h16"/><path d="M4 6h16"/><path d="M4 18h16"/><polyline points="15 3 18 6 15 9"/><polyline points="9 15 6 18 9 21"/></svg>
+      </div>
+      <div class="ic-label green">Feedback Loops</div>
+      <div class="ic-sub">Linters that teach fixes<br>Tests that enforce architecture</div>
+    </div>
+    <div class="icon-card" style="background:rgba(255,159,10,0.04); border:1px solid rgba(255,159,10,0.12);">
+      <div class="ic">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#ff9f0a" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
+      </div>
+      <div class="ic-label orange">Gap Diagnosis</div>
+      <div class="ic-sub">Agent fails? Find what's<br>missing, then encode it</div>
+    </div>
+  </div>
+  <aside class="notes">
+    "So what changes for engineers? Four new skills emerge.
+
+    Environment Design — structuring repos and tooling so agents can navigate effectively. Prompt Decomposition — breaking large goals into agent-tractable building blocks. Feedback Loops — linters that teach fixes, tests that enforce architecture mechanically. And Gap Diagnosis — when an agent fails, the question isn't 'how do I do this myself?' but 'what's missing that would let the agent succeed?'
+
+    These aren't entirely new skills — they're evolutions of what good engineers already do. The shift is in where you apply them."
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 6b: How to get there -->
+<!-- ============================================================ -->
+<section>
+  <h2>Transforming to <span class="accent">harness engineering</span>?</h2>
+  <p style="font-size:0.85em; color:var(--dim); margin-top:0.3em; font-weight:400;">How to get there</p>
+
+  <!-- How we get there -->
+  <div style="display:flex; justify-content:center; gap:1.2em; margin-top:1.2em; text-align:left;">
+    <div class="fragment fade-up" style="flex:1; max-width:320px; padding:0.7em 0.9em; border-radius:0.8em; background:rgba(41,151,255,0.04); border:1px solid rgba(41,151,255,0.1);">
+      <p style="font-size:0.62em; color:var(--accent); font-weight:600; margin:0 0 0.4em;">For engineers</p>
+      <div class="ib">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2997ff" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+        <span><span style="color:#f5f5f7;">Mindset shift</span> — more architectural thinking</span>
+      </div>
+      <div class="ib">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2997ff" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+        <span>Start small — cleanup, tests, docs</span>
+      </div>
+      <div class="ib">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2997ff" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        <span>Learning and sharing</span>
+      </div>
+      <div class="ib">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2997ff" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94L6.9 20.1a2.12 2.12 0 01-3-3l6.63-6.63a6 6 0 017.94-7.94L14.7 6.3z"/></svg>
+        <span>Debugging skills transfer directly</span>
+      </div>
+    </div>
+    <div class="fragment fade-up" style="flex:1; max-width:320px; padding:0.7em 0.9em; border-radius:0.8em; background:rgba(48,209,88,0.04); border:1px solid rgba(48,209,88,0.1);">
+      <p style="font-size:0.62em; color:var(--green); font-weight:600; margin:0 0 0.4em;">What we need from leadership</p>
+      <div class="ib">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#30d158" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        <span>Celebrate environment design wins</span>
+      </div>
+      <div class="ib">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#30d158" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/></svg>
+        <span>Tooling time = product time</span>
+      </div>
+      <div class="ib">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#30d158" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Expect a slow start — it's investment</span>
+      </div>
+      <div class="ib">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#30d158" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>Track how improvements reduce future failures</span>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    "How do we actually get there?
+
+    For engineers: it's a mindset shift toward more architectural thinking. Start small — cleanup, tests, docs. Invest in learning and sharing. Our debugging skills transfer directly — diagnosing agent gaps is the same diagnostic muscle.
+
+    From leadership: celebrate environment wins like feature launches. Treat tooling time as product time. Expect a slow start — that's investment, not failure. And track how each improvement reduces future failures — that's how you make the compounding effect visible."
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 7: What We're Still Learning -->
+<!-- ============================================================ -->
+<section>
+  <h2>Let's be <span class="orange">honest</span></h2>
+  <div class="fragment fade-up" style="display:flex; justify-content:center; gap:1.2em; margin-top:1.2em; flex-wrap:wrap;">
+    <div class="icon-card" style="background:rgba(255,159,10,0.04); border:1px solid rgba(255,159,10,0.12); max-width:200px;">
+      <div class="ic">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff9f0a" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div class="ic-label orange">Long-term coherence</div>
+      <div class="ic-sub">5 months proven.<br>Years? Unknown.</div>
+    </div>
+    <div class="icon-card" style="background:rgba(255,159,10,0.04); border:1px solid rgba(255,159,10,0.12); max-width:200px;">
+      <div class="ic">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff9f0a" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <div class="ic-label orange">Human leverage points</div>
+      <div class="ic-sub">Where does our judgment<br>add the most value?</div>
+    </div>
+    <div class="icon-card" style="background:rgba(255,159,10,0.04); border:1px solid rgba(255,159,10,0.12); max-width:200px;">
+      <div class="ic">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff9f0a" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      </div>
+      <div class="ic-label orange">Model capability growth</div>
+      <div class="ic-sub">Today's constraints:<br>unnecessary or critical?</div>
+    </div>
+  </div>
+  <div class="fragment fade-up" style="margin-top:1.5em; padding:0.6em 1.2em; background:rgba(245,245,247,0.03); border:1px solid rgba(245,245,247,0.08); border-radius:0.8em; display:inline-block; max-width:600px;">
+    <p style="font-size:0.65em; color:var(--dim); margin:0; line-height:1.5; text-align:center;">
+      Discipline hasn't disappeared — the hard work shifted from writing code to <span style="color:#f5f5f7; font-weight:500;">designing the systems that make agents reliable</span>.
+    </p>
+  </div>
+  <aside class="notes">
+    "Three open questions.
+
+    Long-term coherence: 5 months on greenfield. What happens over years? When the team rotates? No one knows yet.
+
+    Human leverage points: where exactly does our judgment add the most value? Can it be encoded to compound?
+
+    Model capability growth: models will improve. Some constraints may become unnecessary — or more critical. We don't know which.
+
+    What we do know: discipline hasn't disappeared — the hard work shifted from writing code to designing the systems that make agents reliable."
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 8: Where to Start -->
+<!-- ============================================================ -->
+<section>
+  <h2>Where do we <span class="accent">start</span>?</h2>
+  <div style="margin-top:0.6em; display:inline-block; text-align:left; max-width:600px;">
+    <div style="display:flex; align-items:flex-start; gap:0.6em; margin:0.4em 0; padding:0.45em 0.8em; border-radius:0.8em; background:rgba(41,151,255,0.04); border:1px solid rgba(41,151,255,0.1);">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2997ff" stroke-width="1.5" style="flex-shrink:0; margin-top:0.1em;"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <div>
+        <p style="font-size:0.62em; color:#f5f5f7; font-weight:600; margin:0;">Bring knowledge into the repo</p>
+        <p style="font-size:0.5em; color:var(--dim); margin:0.1em 0 0;">It may live in Confluence, Teams, or someone's head</p>
+      </div>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:0.6em; margin:0.4em 0; padding:0.45em 0.8em; border-radius:0.8em; background:rgba(41,151,255,0.04); border:1px solid rgba(41,151,255,0.1);">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2997ff" stroke-width="1.5" style="flex-shrink:0; margin-top:0.1em;"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <div>
+        <p style="font-size:0.62em; color:#f5f5f7; font-weight:600; margin:0;">Make existing tools agent-readable</p>
+        <p style="font-size:0.5em; color:var(--dim); margin:0.1em 0 0;">Monitoring, CI, linting — we have them, now make them accessible to agents</p>
+      </div>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:0.6em; margin:0.4em 0; padding:0.45em 0.8em; border-radius:0.8em; background:rgba(41,151,255,0.04); border:1px solid rgba(41,151,255,0.1);">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2997ff" stroke-width="1.5" style="flex-shrink:0; margin-top:0.1em;"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      <div>
+        <p style="font-size:0.62em; color:#f5f5f7; font-weight:600; margin:0;">Pick a low-stakes pilot</p>
+        <p style="font-size:0.5em; color:var(--dim); margin:0.1em 0 0;">Internal tooling, test generation, doc updates</p>
+      </div>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:0.6em; margin:0.4em 0; padding:0.45em 0.8em; border-radius:0.8em; background:rgba(41,151,255,0.04); border:1px solid rgba(41,151,255,0.1);">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2997ff" stroke-width="1.5" style="flex-shrink:0; margin-top:0.1em;"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      <div>
+        <p style="font-size:0.62em; color:#f5f5f7; font-weight:600; margin:0;">Treat every agent failure as a system problem</p>
+        <p style="font-size:0.5em; color:var(--dim); margin:0.1em 0 0;">Don't blame the model — fix the environment</p>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    "Three things at the organizational level.
+
+    One: bring knowledge into the repo. If architecture decisions live in Confluence pages, conventions are in someone's head, specs are scattered across Teams channels — agents can't use any of it. Move it into the repo. That's the single biggest unlock.
+
+    Two: pick a low-stakes pilot. Internal tooling, test generation, doc updates. Not the critical production system. Give the team space to learn.
+
+    Three — the mindset shift: treat every agent failure as a system problem. When the agent produces bad output, ask: what was missing in the environment? Fix that. Now every future task benefits. That's harness engineering."
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 9: Closing -->
+<!-- ============================================================ -->
+<section>
+  <p style="font-size:0.95em; font-weight:500; line-height:1.8;">
+    Want AI work <span class="accent">reliably</span> for us?<br>
+    <span class="fragment fade-up">But first, we need to work <span class="green">for AI</span> —<br>
+    <span class="dim">through better context, better scaffolding, better environments.</span><br>
+    <span style="font-size:0.9em;">That's <span class="accent" style="font-weight:600;">harness engineering</span>.</span></span>
+  </p>
+  <div class="fragment fade-up" style="margin-top:1.5em; padding:0.8em 1.5em; background:rgba(245,245,247,0.03); border:1px solid rgba(245,245,247,0.08); border-radius:0.8em; display:inline-block; max-width:700px;">
+    <p class="quote" style="font-size:0.85em; margin:0;">"Our most difficult challenges now center on <span class="accent">designing environments</span>,<br>not expecting better models to solve everything."</p>
+    <p class="attribution" style="margin-top:0.3em;">— OpenAI Codex Team</p>
+  </div>
+  <aside class="notes">
+    "I'll leave you with this thought.
+
+    Want AI to work reliably for us? Then first, we need to work for AI. Better context so agents understand our intent. Better scaffolding so they stay within safe boundaries. Better environments so output is reliable.
+
+    That's harness engineering. That's what compounds.
+
+    Thank you. Happy to take questions."
+  </aside>
+</section>
+
+<!-- ============================================================ -->
+<!-- SLIDE 10: My Journey -->
+<!-- ============================================================ -->
+<section>
+  <h2>My journey toward <span class="accent">harness engineering</span></h2>
+  <div class="fragment fade-up" style="margin-top:0.8em; display:inline-block; text-align:left; max-width:620px;">
+    <div style="display:flex; align-items:flex-start; gap:0.6em; margin:0.5em 0; padding:0.5em 0.8em; border-radius:0.8em; background:rgba(255,159,10,0.04); border:1px solid rgba(255,159,10,0.1);">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff9f0a" stroke-width="1.5" style="flex-shrink:0; margin-top:0.1em;"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+      <div>
+        <p style="font-size:0.62em; color:#f5f5f7; font-weight:600; margin:0;">Building context engine for data-workspace</p>
+        <p style="font-size:0.5em; color:var(--dim); margin:0.1em 0 0;">DnA — making our repo agent-navigable with structured context</p>
+      </div>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:0.6em; margin:0.5em 0; padding:0.5em 0.8em; border-radius:0.8em; background:rgba(191,90,242,0.04); border:1px solid rgba(191,90,242,0.1);">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#bf5af2" stroke-width="1.5" style="flex-shrink:0; margin-top:0.1em;"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+      <div>
+        <p style="font-size:0.62em; color:#f5f5f7; font-weight:600; margin:0;">PoC for session recording</p>
+        <p style="font-size:0.5em; color:var(--dim); margin:0.1em 0 0;">Work-related — exploring agent-assisted capture and replay</p>
+      </div>
+    </div>
+    <div style="display:flex; align-items:flex-start; gap:0.6em; margin:0.5em 0; padding:0.5em 0.8em; border-radius:0.8em; background:rgba(48,209,88,0.04); border:1px solid rgba(48,209,88,0.1);">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#30d158" stroke-width="1.5" style="flex-shrink:0; margin-top:0.1em;"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      <div>
+        <p style="font-size:0.62em; color:#f5f5f7; font-weight:600; margin:0;">Production web app — zero manual code</p>
+        <p style="font-size:0.5em; color:var(--dim); margin:0.1em 0 0;">Hobby project: Danish exam prep app, fully AI-generated</p>
+        <a href="https://danskprep.vercel.app/welcome" style="font-size:0.45em; color:var(--accent); text-decoration:none;">danskprep.vercel.app</a>
+      </div>
+    </div>
+  </div>
+  <aside class="notes">
+    "Before we wrap up — I've started experimenting with this myself.
+
+    First, a hobby project: a Danish exam prep app, fully AI-generated, deployed to production. Zero manually-written code. You can try it — danskprep.vercel.app.
+
+    Second, at work: a proof of concept for session recording, exploring how agents can assist with capture and replay.
+
+    Third, and most relevant to us: I'm building a context engine for the data-workspace repo in DnA — making our codebase agent-navigable with structured context. That's harness engineering in practice.
+
+    Happy to chat more about any of these."
+  </aside>
+</section>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  transition: 'fade',
+  transitionSpeed: 'slow',
+  backgroundTransition: 'fade',
+  center: true,
+  plugins: [RevealNotes],
+  width: 1280,
+  height: 720
+});
+</script>
+</body>
+</html>
