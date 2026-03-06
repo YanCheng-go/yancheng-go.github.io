@@ -2,8 +2,8 @@ name: Watch for New Repos
 
 on:
   schedule:
-    # Check every 6 hours
-    - cron: '0 */6 * * *'
+    # Check weekly on Wednesday at 6:00 UTC
+    - cron: '0 6 * * 3'
 
 jobs:
   check:
