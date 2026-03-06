@@ -48,7 +48,7 @@ PINNED_HTML=$(echo "$PINNED" | jq -r '
   ) | join("\n\n")
 ')
 
-PINNED_SECTION="    <div class=\"section-label reveal\" style=\"margin-bottom: 1.5rem;\">&#9733; pinned on github</div>
+PINNED_SECTION="    <div class=\"section-label reveal\" style=\"margin-top: 3rem; margin-bottom: 1.5rem;\">&#9733; pinned on github</div>
 
     <div class=\"oss-grid\">
 
@@ -72,7 +72,7 @@ RECENT_HTML=$(echo "$REPOS" | jq -r '
   ) | join("\n\n")
 ')
 
-RECENT_SECTION="    <div class=\"section-label reveal\" style=\"margin-top: 3rem; margin-bottom: 1.5rem;\">&#x276F; recently active</div>
+RECENT_SECTION="    <div class=\"section-label reveal\" style=\"margin-bottom: 1.5rem;\">&#x276F; recently active</div>
 
     <div class=\"oss-grid\">
 
