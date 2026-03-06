@@ -33,12 +33,32 @@
     <a class="nav-logo" href="#hero">~/yan.cheng</a>
     <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
     <ul class="nav-links">
-      <li><a href="#about">about</a></li>
-      <li><a href="#open-source">open_source</a></li>
-      <li><a href="#knowledge-sharing">knowledge_sharing</a></li>
-      <li><a href="#research">research</a></li>
-      <li><a href="#contact">contact</a></li>
+      <li><a href="#about" data-i18n="nav.about">about</a></li>
+      <li><a href="#open-source" data-i18n="nav.oss">open_source</a></li>
+      <li><a href="#knowledge-sharing" data-i18n="nav.knowledge">knowledge_sharing</a></li>
+      <li><a href="#research" data-i18n="nav.research">research</a></li>
+      <li><a href="#contact" data-i18n="nav.contact">contact</a></li>
     </ul>
+    <div class="nav-widgets">
+      <div class="pet-vote" id="pet-vote">
+        <button class="pet-vote-btn" data-pet="cat" title="cat person!">
+          <div class="mini-cat"><div class="mini-cat-eyes"></div></div>
+          <span class="pet-vote-label">cat <span id="vote-cat-count"></span></span>
+        </button>
+        <div class="vote-bar" id="vote-bar">
+          <div class="vote-bar-cat" id="vote-bar-cat"></div>
+        </div>
+        <button class="pet-vote-btn" data-pet="dog" title="dog person!">
+          <div class="mini-dog"><div class="mini-dog-eyes"></div><div class="mini-dog-tongue"></div></div>
+          <span class="pet-vote-label">dog <span id="vote-dog-count"></span></span>
+        </button>
+      </div>
+      <div class="lang-switch" id="lang-switch">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="zh">中</button>
+        <button class="lang-btn" data-lang="da">DA</button>
+      </div>
+    </div>
   </nav>
 
   <!-- ===== Hero ===== -->
@@ -51,12 +71,24 @@
           <span class="terminal-cmd"> yan.cheng --init</span>
         </div>
         <div class="terminal-line" data-delay="600">
-          <span class="terminal-output">> loading identity...</span>
+          <span class="terminal-output" data-i18n="hero.loading">> loading identity...</span>
         </div>
         <div class="terminal-line" data-delay="500">
           <div class="terminal-name-row">
             <img class="hero-avatar" src="https://avatars.githubusercontent.com/u/47188911?v=4" alt="Yan Cheng" />
-            <div class="terminal-name">Yan Cheng (程彦)</div>
+            <div class="terminal-name">Yan Cheng (程彦)
+              <div class="hero-pet" id="hero-pet">
+                <div class="nav-cat-body">
+                  <div class="nav-cat-ear nav-cat-ear-l"></div>
+                  <div class="nav-cat-ear nav-cat-ear-r"></div>
+                  <div class="nav-cat-head">
+                    <div class="nav-cat-eye nav-cat-eye-l"></div>
+                    <div class="nav-cat-eye nav-cat-eye-r"></div>
+                  </div>
+                  <div class="nav-cat-tail"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="terminal-line" data-delay="400">
@@ -80,13 +112,20 @@
           <!-- SYNC:SCHOLAR_STATS_END -->
         </div>
         <div class="terminal-line" data-delay="300">
-          <span class="terminal-output">> Based in <strong style="color: var(--accent);">Denmark</strong> · lived in Netherlands · USA · Kenya · Germany · China</span>
+          <span class="terminal-output" data-i18n-html="hero.location">> Based in <strong style="color: var(--accent);">Denmark</strong> · lived in Netherlands · USA · Kenya · Germany · Switzerland · China</span>
+        </div>
+        <div class="terminal-line" data-delay="200">
+          <span class="terminal-output" data-i18n="hero.funfact">> also: aspiring comedian · meme connoisseur · cat person</span>
         </div>
         <div class="terminal-line" data-delay="300">
           <span class="terminal-output" style="display: flex; gap: 1.2rem; flex-wrap: wrap; margin-top: 0.5rem;">
             <a href="https://www.linkedin.com/in/yan-cheng-rs/" target="_blank" style="color: var(--text-muted); transition: color 0.2s;"><i class="fab fa-linkedin"></i> linkedin</a>
             <a href="https://github.com/YanCheng-go" target="_blank" style="color: var(--text-muted); transition: color 0.2s;"><i class="fab fa-github"></i> github</a>
             <a href="https://scholar.google.com/citations?user=O6azk1oAAAAJ&hl=en" target="_blank" style="color: var(--text-muted); transition: color 0.2s;"><i class="fas fa-graduation-cap"></i> scholar</a>
+          </span>
+        </div>
+        <div class="terminal-line" data-delay="200">
+          <span class="terminal-output" style="display: flex; gap: 1.2rem; flex-wrap: wrap;">
             <a href="https://danskprep.vercel.app" target="_blank" style="color: var(--text-muted); transition: color 0.2s;"><i class="fas fa-language"></i> danskprep</a>
           </span>
         </div>
@@ -99,60 +138,140 @@
     </a>
   </section>
 
+  <!-- ===== Route Map ===== -->
+  <div class="route-map reveal" id="route-map">
+    <svg viewBox="0 0 1000 320" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+      <!-- Simplified world map outline -->
+      <path class="map-outline" d="
+        M 180 80 Q 200 60 230 70 L 260 65 Q 280 55 300 60 L 330 58 Q 350 50 370 55 L 390 60
+        Q 400 65 410 58 L 430 55 Q 450 48 470 52 L 500 50 Q 520 45 540 50 L 560 55
+        Q 580 52 600 55 L 630 58 Q 660 55 680 60 L 710 58 Q 730 52 750 55 L 770 60 Q 790 65 810 60
+        M 200 90 Q 220 85 240 90 L 270 95 Q 290 100 310 95 L 340 90
+        M 350 80 L 380 85 Q 400 90 420 85 L 450 80 Q 470 75 490 80
+        M 500 70 Q 530 75 550 80 L 580 85 Q 610 90 640 85 L 670 80 Q 700 75 730 78
+        M 380 100 Q 400 110 420 115 L 450 120 Q 480 130 500 125
+        M 510 100 Q 530 105 550 110 L 580 120 Q 600 130 620 125 L 650 118
+        M 460 140 Q 480 150 500 155 L 520 160 Q 540 168 560 165
+        M 570 140 Q 590 145 610 150 L 640 155 Q 660 160 680 155
+        M 200 110 Q 220 120 240 125 L 270 130 Q 300 140 320 135
+        M 180 140 Q 200 150 220 155 L 250 160 Q 280 170 300 165
+        M 700 90 Q 720 95 740 100 L 760 110 Q 775 120 790 115
+        M 750 120 Q 770 130 785 140 L 795 155 Q 800 170 790 180
+        M 680 100 Q 700 110 710 120 L 720 135 Q 730 150 720 160
+        M 530 170 Q 550 180 570 185 L 590 190 Q 610 195 620 200
+        M 490 180 Q 510 190 530 200 L 550 210 Q 560 220 550 230
+        M 600 210 Q 620 220 640 225 L 660 230 Q 680 235 700 230
+      " fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+
+      <!-- Route lines -->
+      <path class="route-line" d="M 755 105 C 680 70 600 55 490 72" fill="none" stroke="url(#routeGrad)" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <path class="route-line" d="M 490 72 C 485 75 478 78 475 82" fill="none" stroke="url(#routeGrad)" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <path class="route-line" d="M 475 82 C 520 130 540 170 570 195" fill="none" stroke="url(#routeGrad)" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <path class="route-line" d="M 570 195 C 450 160 350 120 240 115" fill="none" stroke="url(#routeGrad)" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <path class="route-line" d="M 240 115 C 350 90 420 70 495 65" fill="none" stroke="url(#routeGrad)" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <path class="route-line" d="M 495 65 C 492 68 490 70 490 72" fill="none" stroke="url(#routeGrad)" stroke-width="1.5" stroke-dasharray="6 4"/>
+
+      <!-- Gradient -->
+      <defs>
+        <radialGradient id="dotGlow">
+          <stop offset="0%" stop-color="rgba(0,255,213,0.6)"/>
+          <stop offset="100%" stop-color="rgba(0,255,213,0)"/>
+        </radialGradient>
+        <linearGradient id="routeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(0,255,213,0.1)"/>
+          <stop offset="50%" stop-color="rgba(0,255,213,0.4)"/>
+          <stop offset="100%" stop-color="rgba(0,255,213,0.1)"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Location dots + labels -->
+      <circle cx="755" cy="105" r="8" fill="url(#dotGlow)"/>
+      <circle cx="755" cy="105" r="3" fill="#00ffd5" opacity="0.7"/>
+      <text x="755" y="96" class="map-label">China</text>
+
+      <circle cx="490" cy="72" r="12" fill="url(#dotGlow)"/>
+      <circle cx="490" cy="72" r="4" fill="#00ffd5">
+        <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <text x="490" y="60" class="map-label map-label-current">Denmark ★</text>
+
+      <circle cx="475" cy="82" r="8" fill="url(#dotGlow)"/>
+      <circle cx="475" cy="82" r="3" fill="#00ffd5" opacity="0.7"/>
+      <text x="448" y="95" class="map-label">Netherlands</text>
+
+      <circle cx="570" cy="195" r="8" fill="url(#dotGlow)"/>
+      <circle cx="570" cy="195" r="3" fill="#00ffd5" opacity="0.7"/>
+      <text x="580" y="200" class="map-label">Kenya</text>
+
+      <circle cx="240" cy="115" r="8" fill="url(#dotGlow)"/>
+      <circle cx="240" cy="115" r="3" fill="#00ffd5" opacity="0.7"/>
+      <text x="215" y="132" class="map-label">USA</text>
+
+      <circle cx="495" cy="65" r="8" fill="url(#dotGlow)"/>
+      <circle cx="495" cy="65" r="3" fill="#00ffd5" opacity="0.7"/>
+      <text x="508" y="58" class="map-label">Germany</text>
+
+      <circle cx="488" cy="80" r="8" fill="url(#dotGlow)"/>
+      <circle cx="488" cy="80" r="3" fill="#00ffd5" opacity="0.7"/>
+      <text x="460" y="88" class="map-label">Switzerland</text>
+    </svg>
+  </div>
+
   <!-- ===== About ===== -->
   <section class="section" id="about">
     <div class="reveal">
       <div class="section-label">// about</div>
-      <h2 class="section-title">About Me</h2>
+      <h2 class="section-title" data-i18n="about.title">About Me</h2>
       <div class="section-divider"></div>
     </div>
 
     <div class="reveal">
-      <p class="about-text">
-        <strong>Machine Learning & AI Engineer</strong> with a PhD in AI for Earth Observations,
+      <p class="about-text" data-i18n-html="about.bio1">
+        <strong>Machine Learning & AI Engineer</strong> with a PhD in Computer Vision for Earth Observations
+        (<strong>UCPH</strong>, exchange at <strong>ETH Zurich</strong>),
         focusing on computer vision, deep learning, and geospatial data for environmental monitoring.
-        With 3.5 years of academic research and 3+ years of professional experience across Europe,
-        the USA, and Asia — now happily exploring AI models and toolings in an embedded software company.
+        With 3.5 years of academic research and 3+ years of professional experience across Europe, the USA, and Asia —
+        now happily exploring AI models and toolings in an embedded software company.
       </p>
-      <p class="about-text">
+      <p class="about-text" data-i18n="about.bio2">
         Passionate about deriving insights from big data to solve real-life problems.
         I also enjoy sharing knowledge through presentations, teaching, blogging, and publishing.
       </p>
-      <p class="about-text" style="font-family: var(--mono); font-size: 0.85rem; color: var(--accent);">
-        Fun fact: I mastered JavaScript in a week by reading a 687-page guide and building a website — sparking my lifelong love for programming!
+      <p class="about-text" style="font-family: var(--mono); font-size: 0.85rem; color: var(--accent); margin-bottom: 3rem;" data-i18n="about.funfact">
+        Mastered JavaScript in a week back in 2014 by reading a 687-page guide. Aspiring standup comedian and full-time meme connoisseur.
       </p>
     </div>
 
     <div class="skills-grid reveal">
       <div class="skill-card">
         <div class="skill-card-icon">&#60;/&#62; programming</div>
-        <h3>Programming</h3>
-        <p>Python (7+ years), JavaScript, SQL, Bash</p>
+        <h3 data-i18n="skills.prog.title">Programming</h3>
+        <p>Python (<span id="python-years"></span>+ years), JavaScript, SQL, Bash</p>
       </div>
       <div class="skill-card">
         <div class="skill-card-icon">&#9881; ai & ml</div>
-        <h3>AI & ML</h3>
+        <h3 data-i18n="skills.ai.title">AI & ML</h3>
         <p>PyTorch, Scikit-learn, Hugging Face, Computer Vision, Deep Learning</p>
       </div>
       <div class="skill-card">
         <div class="skill-card-icon">⊞ geospatial</div>
-        <h3>Geospatial</h3>
+        <h3 data-i18n="skills.geo.title">Geospatial</h3>
         <p>GDAL, Rasterio, GeoPandas, Google Earth Engine, QGIS, ArcGIS</p>
       </div>
       <div class="skill-card">
         <div class="skill-card-icon">☁ cloud & devops</div>
-        <h3>Cloud & DevOps</h3>
+        <h3 data-i18n="skills.cloud.title">Cloud & DevOps</h3>
         <p>Azure, AWS, Docker, Git, CI/CD, GitHub Actions</p>
       </div>
       <div class="skill-card">
         <div class="skill-card-icon">&#9776; data</div>
-        <h3>Data Handling</h3>
+        <h3 data-i18n="skills.data.title">Data Handling</h3>
         <p>PostgreSQL/PostGIS, Pandas, NumPy, xarray, NetCDF, PySpark, Dask, Airflow</p>
       </div>
       <div class="skill-card">
         <div class="skill-card-icon">&#9998; viz & languages</div>
-        <h3>Visualization & Languages</h3>
-        <p>Plotly, Matplotlib, Seaborn · English (near-native), Chinese (native), Danish (beginner)</p>
+        <h3 data-i18n="skills.viz.title">Visualization & Languages</h3>
+        <p data-i18n="skills.viz.desc">Plotly, Matplotlib, Seaborn · English (near-native), Chinese (native), Danish (beginner)</p>
       </div>
     </div>
   </section>
@@ -161,8 +280,12 @@
   <section class="section" id="open-source">
     <div class="reveal">
       <div class="section-label">// open_source</div>
-      <h2 class="section-title">Open Source</h2>
+      <h2 class="section-title" data-i18n="oss.title">Open Source</h2>
       <div class="section-divider"></div>
+    </div>
+
+    <div class="reveal" style="margin-bottom: 2rem;">
+      <p class="about-text" data-i18n-html="oss.current">Currently building <a href="https://danskprep.vercel.app" target="_blank"><strong>danskprep</strong></a> — a fun side project to help with Danish language exam preparation, built with TypeScript and deployed on Vercel.</p>
     </div>
 
     <!-- SYNC:PINNED_START -->
@@ -246,7 +369,7 @@
   <section class="section" id="knowledge-sharing">
     <div class="reveal">
       <div class="section-label">// knowledge_sharing</div>
-      <h2 class="section-title">Knowledge Sharing</h2>
+      <h2 class="section-title" data-i18n="ks.title">Knowledge Sharing</h2>
       <div class="section-divider"></div>
     </div>
 
@@ -348,8 +471,8 @@
   <section class="section" id="research">
     <div class="reveal">
       <div class="section-label">// archived_research</div>
-      <h2 class="section-title">Research Archive</h2>
-      <p class="about-text" style="margin-bottom: 0;">Publications and projects from my academic years — currently happily exploring AI models and tooling in the embedded software industry.</p>
+      <h2 class="section-title" data-i18n="research.title">Research Archive</h2>
+      <p class="about-text" style="margin-bottom: 0;" data-i18n="research.subtitle">Publications and projects from my academic years — currently happily exploring AI models and tooling in the embedded software industry.</p>
       <div class="section-divider"></div>
     </div>
 
@@ -532,7 +655,7 @@
         <span class="pub-cite"></span>
       </div>
     </div>
-    <button class="pub-toggle" id="pub-toggle">show all publications ↓</button>
+    <button class="pub-toggle" id="pub-toggle" data-i18n="research.showAll">show all publications ↓</button>
     <!-- SYNC:SCHOLAR_END -->
 
   </section>
@@ -541,7 +664,7 @@
   <section class="section contact" id="contact">
     <div class="reveal">
       <div class="section-label">// contact</div>
-      <h2 class="section-title">Let's Connect</h2>
+      <h2 class="section-title" data-i18n="contact.title">Let's Connect</h2>
       <div class="section-divider"></div>
     </div>
 
@@ -575,6 +698,11 @@
     <img src="https://avatars.githubusercontent.com/u/47188911?v=4" alt="Yan Cheng" />
   </div>
 
+  <!-- Neko (desktop pet) -->
+  <div id="neko" class="neko"></div>
+
+  <!-- Supabase SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <!-- Scripts -->
   <script src="assets/js/modern.js"></script>
 

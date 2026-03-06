@@ -97,6 +97,41 @@ a:hover {
   opacity: 1;
 }
 
+.nav-widgets {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lang-switch {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.lang-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.lang-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.lang-btn.active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+
 .nav-toggle {
   display: none;
   background: none;
@@ -272,6 +307,54 @@ a:hover {
 @keyframes float {
   0%, 100% { transform: translateX(-50%) translateY(0); }
   50% { transform: translateX(-50%) translateY(8px); }
+}
+
+/* ===== Route Map ===== */
+.route-map {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  overflow: hidden;
+}
+
+.route-map svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.map-outline {
+  opacity: 0.4;
+}
+
+.map-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  fill: var(--text-muted);
+  text-anchor: middle;
+}
+
+.map-label-current {
+  fill: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.route-line {
+  stroke-dashoffset: 1000;
+  animation: draw-route 3s ease forwards;
+  animation-play-state: paused;
+}
+
+.route-map.visible .route-line {
+  animation-play-state: running;
+}
+
+@keyframes draw-route {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 /* ===== Sections ===== */
@@ -709,6 +792,349 @@ a:hover {
   font-size: 0.75rem;
   color: var(--text-muted);
   font-family: var(--mono);
+}
+
+/* ===== Pet Vote Widget (nav) ===== */
+.pet-vote {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.pet-vote-btn {
+  background: none;
+  border: 1px solid var(--border);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  opacity: 0.4;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  outline: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pet-vote-btn:hover {
+  opacity: 0.7;
+  border-color: var(--accent);
+}
+
+.pet-vote-btn:not(.active) {
+  border-color: var(--border) !important;
+  background: none !important;
+}
+
+.pet-vote-btn.active {
+  opacity: 1;
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.vote-bar {
+  width: 40px;
+  height: 6px;
+  background: #8a6030;
+  border-radius: 3px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.vote-bar-cat {
+  height: 100%;
+  width: 50%;
+  background: var(--text-muted);
+  border-radius: 3px 0 0 3px;
+  transition: width 0.6s ease;
+}
+
+.pet-vote-label {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.pet-vote-btn.active .pet-vote-label {
+  color: var(--accent);
+}
+
+/* Mini cat shape (vote + hero) */
+.mini-cat {
+  position: relative;
+  width: 16px;
+  height: 12px;
+  background: var(--text-muted);
+  border-radius: 8px 8px 4px 4px;
+  flex-shrink: 0;
+}
+
+.mini-cat::before,
+.mini-cat::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  width: 0;
+  height: 0;
+  border-left: 3px solid transparent;
+  border-right: 3px solid transparent;
+  border-bottom: 5px solid var(--text-muted);
+}
+
+.mini-cat::before { left: 1px; }
+.mini-cat::after { right: 1px; }
+
+.mini-cat-eyes {
+  position: absolute;
+  top: 3px;
+  left: 2px;
+  right: 2px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mini-cat-eyes::before,
+.mini-cat-eyes::after {
+  content: '';
+  width: 2.5px;
+  height: 2.5px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: cat-blink 4s ease infinite;
+}
+
+/* Mini dog shape (vote + hero) */
+.mini-dog {
+  position: relative;
+  width: 16px;
+  height: 12px;
+  background: #b08050;
+  border-radius: 8px 8px 4px 4px;
+  flex-shrink: 0;
+}
+
+.mini-dog::before,
+.mini-dog::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  width: 5px;
+  height: 6px;
+  background: #8a6030;
+  border-radius: 50% 50% 40% 40%;
+}
+
+.mini-dog::before { left: 0; transform: rotate(-15deg); }
+.mini-dog::after { right: 0; transform: rotate(15deg); }
+
+.mini-dog-eyes {
+  position: absolute;
+  top: 3px;
+  left: 2px;
+  right: 2px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.mini-dog-eyes::before,
+.mini-dog-eyes::after {
+  content: '';
+  width: 2.5px;
+  height: 2.5px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: cat-blink 4s ease infinite;
+}
+
+.mini-dog-tongue {
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 3px;
+  background: #e66;
+  border-radius: 0 0 50% 50%;
+}
+
+@keyframes cat-blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.1); }
+}
+
+/* ===== Original Cat/Dog shapes (hero pet + toggle) ===== */
+.nav-cat-body {
+  position: relative;
+  width: 22px;
+  height: 16px;
+  background: var(--text-muted);
+  border-radius: 10px 10px 6px 6px;
+}
+
+.nav-cat-ear {
+  position: absolute;
+  top: -5px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 6px solid var(--text-muted);
+}
+
+.nav-cat-ear-l { left: 2px; }
+.nav-cat-ear-r { right: 2px; }
+
+.nav-cat-head {
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  right: 3px;
+  height: 10px;
+  transition: transform 0.1s;
+}
+
+.nav-cat-eye {
+  position: absolute;
+  top: 2px;
+  width: 3px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: cat-blink 4s ease infinite;
+}
+
+.nav-cat-eye-l { left: 2px; }
+.nav-cat-eye-r { right: 2px; }
+
+.nav-cat-tail {
+  position: absolute;
+  bottom: 2px;
+  right: -10px;
+  width: 12px;
+  height: 3px;
+  background: var(--text-muted);
+  border-radius: 0 3px 3px 0;
+  transform-origin: left center;
+  animation: tail-sway 2s ease-in-out infinite;
+}
+
+@keyframes tail-sway {
+  0%, 100% { transform: rotate(-15deg); }
+  50% { transform: rotate(15deg); }
+}
+
+.nav-dog-body {
+  position: relative;
+  width: 22px;
+  height: 16px;
+  background: #b08050;
+  border-radius: 10px 10px 6px 6px;
+}
+
+.nav-dog-ear {
+  position: absolute;
+  top: -2px;
+  width: 6px;
+  height: 8px;
+  background: #8a6030;
+  border-radius: 50% 50% 40% 40%;
+}
+
+.nav-dog-ear-l { left: 1px; transform: rotate(-15deg); }
+.nav-dog-ear-r { right: 1px; transform: rotate(15deg); }
+
+.nav-dog-head {
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  right: 3px;
+  height: 10px;
+}
+
+.nav-dog-eye {
+  position: absolute;
+  top: 2px;
+  width: 3px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: cat-blink 4s ease infinite;
+}
+
+.nav-dog-eye-l { left: 2px; }
+.nav-dog-eye-r { right: 2px; }
+
+.nav-dog-tongue {
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background: #e66;
+  border-radius: 0 0 50% 50%;
+  animation: tongue-bob 1.5s ease-in-out infinite;
+}
+
+@keyframes tongue-bob {
+  0%, 100% { height: 4px; }
+  50% { height: 6px; }
+}
+
+.nav-dog-tail {
+  position: absolute;
+  bottom: 2px;
+  right: -8px;
+  width: 10px;
+  height: 3px;
+  background: #b08050;
+  border-radius: 0 3px 3px 0;
+  transform-origin: left center;
+  animation: tail-wag 0.4s ease-in-out infinite alternate;
+}
+
+@keyframes tail-wag {
+  0% { transform: rotate(-25deg); }
+  100% { transform: rotate(25deg); }
+}
+
+/* Hero pet (next to name) */
+.hero-pet {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.75rem;
+  cursor: pointer;
+  position: relative;
+  animation: pet-bounce 2s ease-in-out infinite;
+  transition: transform 0.2s;
+}
+
+.hero-pet:hover {
+  transform: scale(1.2);
+}
+
+@keyframes pet-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* ===== Neko Desktop Pet ===== */
+.neko {
+  position: fixed;
+  z-index: 999;
+  pointer-events: none;
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+  transition: none;
+}
+
+.neko-sprite {
+  width: 32px;
+  height: 32px;
 }
 
 /* ===== Responsive ===== */
