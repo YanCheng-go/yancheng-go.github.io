@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a0a0a" />
   <meta name="description" content="Yan Cheng — Machine Learning Engineer, PhD in Computer Vision for Earth Observations" />
   <meta name="author" content="Yan Cheng" />
   <meta name="google-site-verification" content="Iqm5Fzh3Fz_CpYLxXd6aKf-W-uhkVon0Orb8bRXoLjo" />
@@ -32,6 +33,9 @@
 
   <!-- Styles -->
   <link href="assets/css/modern.css" rel="stylesheet" />
+
+  <!-- Fallback for no-JS: make content visible -->
+  <noscript><style>.reveal { opacity: 1; transform: none; } .terminal-line { opacity: 1; transform: none; }</style></noscript>
 
   <!-- Analytics -->
   <script>var clicky_site_ids = clicky_site_ids || []; clicky_site_ids.push(101290370);</script>
@@ -401,7 +405,7 @@
     <div class="blog-grid">
 
       <a class="blog-card reveal" href="blogs/harness-engineering-slides.html" target="_blank" data-category="talks">
-        <img class="blog-card-img" src="assets/img/blogs/harness-engineering.gif" alt="Harness Engineering" />
+        <img class="blog-card-img" src="assets/img/blogs/harness-engineering.gif" alt="Harness Engineering" loading="lazy" />
         <div class="blog-card-body">
           <div class="blog-card-tag">talk · march 2026</div>
           <h3>Harness Engineering: The Discipline That Made It Possible</h3>
@@ -410,7 +414,7 @@
       </a>
 
       <a class="blog-card reveal" href="https://drive.google.com/file/d/1cK-JtirMF61xrysZuwwTMFwbZf1CJquM/view?usp=sharing" target="_blank" data-category="other">
-        <img class="blog-card-img" src="assets/img/blogs/blog-ESRI.jpg" alt="Esri internship" />
+        <img class="blog-card-img" src="assets/img/blogs/blog-ESRI.jpg" alt="Esri internship" loading="lazy" />
         <div class="blog-card-body">
           <div class="blog-card-tag">other · 2019</div>
           <h3>How does the global market leader in GIS look like?</h3>
@@ -419,7 +423,7 @@
       </a>
 
       <a class="blog-card reveal" href="blogs/master-git-github.slides.html" target="_blank" data-category="programming">
-        <img class="blog-card-img" src="blogs/img/Octocat.png" alt="Git & GitHub" />
+        <img class="blog-card-img" src="blogs/img/Octocat.png" alt="Git & GitHub" loading="lazy" />
         <div class="blog-card-body">
           <div class="blog-card-tag">programming · dec 2020</div>
           <h3>Master Git and GitHub in one hour</h3>
@@ -428,7 +432,7 @@
       </a>
 
       <a class="blog-card reveal" href="blogs/set-up-virtualenv-for-python-projects/set-up-virtualenv-for-python-projects.html" target="_blank" data-category="programming">
-        <img class="blog-card-img" src="assets/img/blogs/virtualenv-python.png" alt="Virtualenv" />
+        <img class="blog-card-img" src="assets/img/blogs/virtualenv-python.png" alt="Virtualenv" loading="lazy" />
         <div class="blog-card-body">
           <div class="blog-card-tag">programming · dec 2020</div>
           <h3>Set up multiple environments for Python projects</h3>
@@ -437,7 +441,7 @@
       </a>
 
       <a class="blog-card reveal" href="https://www.notion.so/Docker-Best-Practices-25d8f8cc7e358080b564d470e7ea2454?source=copy_link" target="_blank" data-category="programming">
-        <img class="blog-card-img" src="https://raw.githubusercontent.com/YanCheng-go/yancheng-go.github.io/refs/heads/main/blogs/img/Docker_150x150px-01-01-01-400x400.png" alt="Docker" />
+        <img class="blog-card-img" src="https://raw.githubusercontent.com/YanCheng-go/yancheng-go.github.io/refs/heads/main/blogs/img/Docker_150x150px-01-01-01-400x400.png" alt="Docker" loading="lazy" />
         <div class="blog-card-body">
           <div class="blog-card-tag">programming · 2025</div>
           <h3>Docker Best Practices</h3>
@@ -446,7 +450,7 @@
       </a>
 
       <a class="blog-card reveal" href="https://brief-palm-a1e.notion.site/Understanding-Compatibility-Between-NVIDIA-Drivers-CUDA-and-PyTorch-A-Quick-Guide-1ed8f8cc7e3580e48907ed02c74b0b89" target="_blank" data-category="programming">
-        <img class="blog-card-img" src="blogs/img/cuda.png" alt="CUDA" />
+        <img class="blog-card-img" src="blogs/img/cuda.png" alt="CUDA" loading="lazy" />
         <div class="blog-card-body">
           <div class="blog-card-tag">programming · 2025</div>
           <h3>Understanding NVIDIA Drivers, CUDA, and PyTorch Compatibility</h3>
@@ -455,7 +459,7 @@
       </a>
 
       <a class="blog-card reveal" href="https://www.notion.so/Create-a-raster-timeseries-layer-on-Geoserver-2158f8cc7e3580dda43acd7d927257b1" target="_blank" data-category="programming">
-        <img class="blog-card-img" src="blogs/img/GeoServer-370x206.png" alt="GeoServer" />
+        <img class="blog-card-img" src="blogs/img/GeoServer-370x206.png" alt="GeoServer" loading="lazy" />
         <div class="blog-card-body">
           <div class="blog-card-tag">programming · 2025</div>
           <h3>Create a raster timeseries layer on GeoServer</h3>
@@ -464,7 +468,7 @@
       </a>
 
       <a class="blog-card reveal" href="https://www.notion.so/Two-important-considerations-for-ETL-pipelines-2378f8cc7e35807ca36ef4d40302b4f6" target="_blank" data-category="programming">
-        <img class="blog-card-img" src="https://user-images.githubusercontent.com/19210522/115540283-9b609100-a2a6-11eb-9f48-08f3a17528d8.png" alt="ETL" />
+        <img class="blog-card-img" src="https://user-images.githubusercontent.com/19210522/115540283-9b609100-a2a6-11eb-9f48-08f3a17528d8.png" alt="ETL" loading="lazy" />
         <div class="blog-card-body">
           <div class="blog-card-tag">programming · 2025</div>
           <h3>Two Best Practices in ETL Pipelines</h3>
@@ -473,7 +477,7 @@
       </a>
 
       <a class="blog-card reveal" href="https://github.com/YanCheng-go/Awesome-Geospatial-Intelligence-Companies" target="_blank" data-category="business">
-        <img class="blog-card-img" src="https://raw.githubusercontent.com/YanCheng-go/yancheng-go.github.io/refs/heads/main/blogs/img/images.png" alt="Geospatial Intelligence" />
+        <img class="blog-card-img" src="https://raw.githubusercontent.com/YanCheng-go/yancheng-go.github.io/refs/heads/main/blogs/img/images.png" alt="Geospatial Intelligence" loading="lazy" />
         <div class="blog-card-body">
           <div class="blog-card-tag">business & tech · 2025</div>
           <h3>Geospatial Intelligence Companies Overview</h3>
@@ -496,7 +500,7 @@
     <div class="projects-grid">
 
       <div class="project-card reveal">
-        <img class="project-card-img" src="assets/img/projects/thumbnail/project-deadtrees-min.jpg" alt="Dead trees database" />
+        <img class="project-card-img" loading="lazy" src="assets/img/projects/thumbnail/project-deadtrees-min.jpg" alt="Dead trees database" />
         <div class="project-card-body">
           <h3>An Interactive Database of Aerial Images for Deep Learning-based Tree Assessment</h3>
           <p></p>
@@ -505,7 +509,7 @@
       </div>
 
       <div class="project-card reveal">
-        <img class="project-card-img" src="assets/img/projects/thumbnail/project-NComms2024-min.PNG" alt="Nature Communications 2024" />
+        <img class="project-card-img" loading="lazy" src="assets/img/projects/thumbnail/project-NComms2024-min.PNG" alt="Nature Communications 2024" />
         <div class="project-card-body">
           <h3>Nature Communications: AI reveals millions of dead trees hidden among the living before California's 2020 wildfires</h3>
           <p></p>
@@ -514,7 +518,7 @@
       </div>
 
       <div class="project-card reveal">
-        <img class="project-card-img" src="assets/img/Screenshot%20from%202023-09-24%2016-56-56.png" alt="EGU 2023" />
+        <img class="project-card-img" loading="lazy" src="assets/img/Screenshot%20from%202023-09-24%2016-56-56.png" alt="EGU 2023" />
         <div class="project-card-body">
           <h3>Mapping and characterising tree mortality in California at individual tree level using deep learning</h3>
           <p></p>
@@ -523,7 +527,7 @@
       </div>
 
       <div class="project-card reveal">
-        <img class="project-card-img" src="assets/img/projects/thumbnail/project-EBRD-min.PNG" alt="EBRD Climate Risk" />
+        <img class="project-card-img" loading="lazy" src="assets/img/projects/thumbnail/project-EBRD-min.PNG" alt="EBRD Climate Risk" />
         <div class="project-card-body">
           <h3>Assessing Physical Climate Risks for EBRD's Power Generation Project Investment Portfolio</h3>
           <p></p>
@@ -532,7 +536,7 @@
       </div>
 
       <div class="project-card reveal">
-        <img class="project-card-img" src="assets/img/projects/thumbnail/project-rse2020-min.jpg" alt="RSE 2020" />
+        <img class="project-card-img" loading="lazy" src="assets/img/projects/thumbnail/project-rse2020-min.jpg" alt="RSE 2020" />
         <div class="project-card-body">
           <h3>Fine-resolution vegetation phenology of tropical grasslands in Eastern Africa</h3>
           <p>First globally to use PlanetScope for phenological analysis over semi-arid grasslands</p>
@@ -541,7 +545,7 @@
       </div>
 
       <div class="project-card reveal">
-        <img class="project-card-img" src="assets/img/projects/thumbnail/project-TRAILS-min.png" alt="TRAILS" />
+        <img class="project-card-img" loading="lazy" src="assets/img/projects/thumbnail/project-TRAILS-min.png" alt="TRAILS" />
         <div class="project-card-body">
           <h3>Esri's TRAILS project in collaboration with USGS</h3>
           <p>Tested and documented the functionalities of the TRAILS platform</p>
@@ -550,7 +554,7 @@
       </div>
 
       <div class="project-card reveal">
-        <img class="project-card-img" src="assets/img/projects/thumbnail/project-GI-min.jpg" alt="Green Infrastructure" />
+        <img class="project-card-img" loading="lazy" src="assets/img/projects/thumbnail/project-GI-min.jpg" alt="Green Infrastructure" />
         <div class="project-card-body">
           <h3>Esri's Green Infrastructure Initiative</h3>
           <p>Research, GIS analyses, new indicators/layers, and Esri Story Maps demonstrations</p>
@@ -559,7 +563,7 @@
       </div>
 
       <div class="project-card reveal">
-        <img class="project-card-img" src="assets/img/projects/thumbnail/project-BIGMAP2019-min.png" alt="BIGMAP" />
+        <img class="project-card-img" loading="lazy" src="assets/img/projects/thumbnail/project-BIGMAP2019-min.png" alt="BIGMAP" />
         <div class="project-card-body">
           <h3>Esri's BIGMAP project in collaboration with USFS</h3>
           <p>Python packages for cloud-based preprocessing and time series analysis of Landsat data</p>

@@ -1137,8 +1137,37 @@ a:hover {
   height: 32px;
 }
 
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .terminal-line {
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero-avatar {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
+  .nav {
+    flex-wrap: wrap;
+  }
+
   .nav-links {
     display: none;
     position: absolute;
@@ -1160,8 +1189,25 @@ a:hover {
     display: block;
   }
 
+  .nav-widgets {
+    order: 10;
+    width: 100%;
+    justify-content: center;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border);
+    margin-top: 0.5rem;
+  }
+
   .terminal-name {
     font-size: 1.8rem;
+  }
+
+  .terminal-block {
+    font-size: 0.8rem;
+  }
+
+  .hero-content {
+    padding: 1.5rem;
   }
 
   .section {
@@ -1180,10 +1226,40 @@ a:hover {
   .contact-links {
     gap: 2rem;
   }
+
+  .pub-item {
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .pub-year {
+    width: auto;
+  }
 }
 
 @media (max-width: 480px) {
   .skills-grid {
     grid-template-columns: 1fr;
+  }
+
+  .terminal-name {
+    font-size: 1.4rem;
+  }
+
+  .hero-avatar {
+    width: 56px;
+    height: 56px;
+  }
+
+  .nav-widgets {
+    gap: 0.5rem;
+  }
+
+  .pet-vote {
+    gap: 0.3rem;
+  }
+
+  .vote-bar {
+    width: 30px;
   }
 }
