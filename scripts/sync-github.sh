@@ -86,9 +86,11 @@ SCHOLAR_USER="O6azk1oAAAAJ"
 SCHOLAR_HTML=$(curl -sL "https://scholar.google.com/citations?user=${SCHOLAR_USER}&hl=en&cstart=0&pagesize=100" \
   -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)")
 
-# Parse total citations and h-index
-TOTAL_CITATIONS=$(echo "$SCHOLAR_HTML" | grep -o 'gsc_rsb_std">[^<]*' | head -1 | sed 's/gsc_rsb_std">//')
-H_INDEX=$(echo "$SCHOLAR_HTML" | grep -o 'gsc_rsb_std">[^<]*' | head -3 | tail -1 | sed 's/gsc_rsb_std">//')
+# Parse total citations and h-index (|| true to prevent set -e exit on no match)
+TOTAL_CITATIONS=$(echo "$SCHOLAR_HTML" | grep -o 'gsc_rsb_std">[^<]*' | head -1 | sed 's/gsc_rsb_std">//' || true)
+H_INDEX=$(echo "$SCHOLAR_HTML" | grep -o 'gsc_rsb_std">[^<]*' | head -3 | tail -1 | sed 's/gsc_rsb_std">//' || true)
+
+SKIP_SCHOLAR=false
 
 # Validate Scholar data before proceeding
 if [ -z "$TOTAL_CITATIONS" ] || [ -z "$H_INDEX" ]; then
@@ -97,15 +99,21 @@ if [ -z "$TOTAL_CITATIONS" ] || [ -z "$H_INDEX" ]; then
   SKIP_SCHOLAR=true
 fi
 
-# Extract triples: title, citations, year
-TITLES=$(echo "$SCHOLAR_HTML" | grep -o 'gsc_a_at">[^<]*' | sed 's/gsc_a_at">//' | sed "s/&#39;/'/g")
-CITES=$(echo "$SCHOLAR_HTML" | grep -o 'gsc_a_ac gs_ibl">[^<]*' | sed 's/gsc_a_ac gs_ibl">//')
-YEARS=$(echo "$SCHOLAR_HTML" | grep -o 'gsc_a_h gsc_a_hc gs_ibl">[^<]*' | sed 's/gsc_a_h gsc_a_hc gs_ibl">//')
+# Extract triples: title, citations, year (|| true to prevent set -e exit on no match)
+TITLES=$(echo "$SCHOLAR_HTML" | grep -o 'gsc_a_at">[^<]*' | sed 's/gsc_a_at">//' | sed "s/&#39;/'/g" || true)
+CITES=$(echo "$SCHOLAR_HTML" | grep -o 'gsc_a_ac gs_ibl">[^<]*' | sed 's/gsc_a_ac gs_ibl">//' || true)
+YEARS=$(echo "$SCHOLAR_HTML" | grep -o 'gsc_a_h gsc_a_hc gs_ibl">[^<]*' | sed 's/gsc_a_h gsc_a_hc gs_ibl">//' || true)
 
 if [ -z "$TITLES" ]; then
   echo "WARNING: No publication titles found from Scholar. Skipping Scholar update."
   SKIP_SCHOLAR=true
 fi
+
+PUB_COUNT=0
+SCHOLAR_STATS_HTML=""
+SCHOLAR_SECTION=""
+
+if [ "$SKIP_SCHOLAR" != "true" ]; then
 
 PUB_COUNT=$(echo "$TITLES" | wc -l | tr -d ' ')
 
@@ -158,6 +166,8 @@ END {
 }
 ')
 
+fi  # end SKIP_SCHOLAR guard for building scholar HTML
+
 # ---- Write to temp files for perl replacement ----
 
 TMPDIR=$(mktemp -d)
@@ -199,4 +209,8 @@ fi
 
 rm -rf "$TMPDIR"
 
-echo "Synced: ${REPOS_COUNT} repos, ${FOLLOWERS} followers, ${TOTAL_CITATIONS} citations, pinned + recent + scholar updated."
+if [ "$SKIP_SCHOLAR" = "true" ]; then
+  echo "Synced: ${REPOS_COUNT} repos, ${FOLLOWERS} followers. Scholar skipped."
+else
+  echo "Synced: ${REPOS_COUNT} repos, ${FOLLOWERS} followers, ${TOTAL_CITATIONS} citations, pinned + recent + scholar updated."
+fi
